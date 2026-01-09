@@ -621,6 +621,60 @@ button:focus {
 }
 
 /* ========================================
+   ARTISTS GRID (Artists We Admire Page)
+   ======================================== */
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.artist-card {
+    border: 2px solid var(--text-color);
+    transition: border-color 0.2s ease;
+    background: var(--bg-color);
+}
+
+.artist-card:hover {
+    border-color: var(--link-color);
+}
+
+.artist-card a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.artist-card a:hover {
+    color: var(--link-color);
+}
+
+.artist-image {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: #111;
+    border-bottom: 2px solid var(--text-color);
+}
+
+.artist-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.artist-info {
+    padding: 1rem;
+}
+
+.artist-info h4 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* ========================================
    RESPONSIVE LAYOUT BREAKPOINTS
    ======================================== */
 
@@ -673,5 +727,23 @@ button:focus {
 
     .image-interruption.half {
         width: 100%;
+    }
+
+    /* Artists grid responsive */
+    .artists-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .artist-info h4 {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .artists-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 }

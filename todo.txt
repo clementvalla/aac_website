@@ -1,5 +1,19 @@
 [ ] answer what kind fo work will i make
 [ ] answer what kind of job will i get
+
+about page:
 [ ] about - > jog theory. remove 'jig' talk about AI, tool building and bespoke software
 [ ] about -> threading ... detail more.... threading making with critical theory, art history, computer history and the stack
+[ ] remove images from left column
+
+boxes
 [ ] add a small explanation about the 'draw' box that will eventually become the 'tool' box on the site
+
+
+work
+[ ] remove work page for now?
+[ ] how to show big mush of work but no attributions? would take too long?
+
+
+live
+[ ] image nav above images for easier clicking
