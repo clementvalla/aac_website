@@ -1,0 +1,13 @@
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+
+# Ignore all images except placeholders
+images/*
+!images/ctc_01.jpg
+!images/ctc_02.jpg
+!images/ctc_03.jpg
+!images/ctc_09.jpg
+!images/ctc_12.jpg

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art & Computation at RISD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="draw-layer"></canvas>
+
+    <div class="layout-container">
+        <!-- Left Column: Main Content -->
+        <div class="content-column">
+            <header>
+        <canvas id="header-sketch" role="img" aria-label="Art and Computation at RISD"></canvas>
+        <nav>
+            <a href="index.html" class="current">Home</a>
+            <a href="about.html">About</a>
+            <a href="work.html">Work</a>
+            <a href="people.html">People</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="join.html">How to Join</a>
+            <a href="live.html">Live</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>RISD's newest department. Join now and help shape what it becomes.</h2>
+            </div>
+            <div class="hero-image-ticker">
+                <!-- Auto-rotates through selected images -->
+            </div>
+        </section>
+
+        <section>
+            <h2>What This Is</h2>
+            <p>Art & Computation isn't about bringing computers to art—it's about bringing art and poetics to computers. We treat computation as creative material, the way painters work with paint or sculptors work with clay. You learn to shape technology rather than just use it.</p>
+
+            <p>This is a studio culture focused on making real things—prototypes, systems, tools, artworks. Build websites, games, robots. Visualize data, create 3D worlds, work with AI to develop new creative pipelines. Make custom digital tools. Not slideshows. Not just concepts. Actual work.</p>
+        </section>
+
+        <section>
+            <h2>Why Join Now</h2>
+
+            <h3>You'll shape the department.</h3>
+            <p>We're new—RISD's first undergraduate department in 30 years. That means you're not just joining a program, you're helping define it. Your interests, your work, your questions will shape what Art & Computation becomes.</p>
+
+            <h3>Radical flexibility.</h3>
+            <p>One of RISD's most open curricula. Lots of electives. Multiple pathways. You can focus on art practice, design work, tech industry careers, or invent your own combination. Computational skills open every door.</p>
+
+            <h3>True interdisciplinarity.</h3>
+            <p>Want to work in the art world? Build a tech startup? Design for major companies? Do all three? The same computational foundation supports all of it. This isn't pre-professional training—it's learning to work with computation on your own terms.</p>
+
+            <h3>Ground floor opportunity.</h3>
+            <p>We're building capacity—facilities, resources, networks. The students who join now help shape all of it. That's part of the education: being entrepreneurial, defining the future, building something from the ground up.</p>
+        </section>
+
+        <section>
+            <h2>Open House Event</h2>
+            <div class="event-box">
+                <p><strong>Art & Computation Open House</strong><br>
+                Sunday, January 26, 2026<br>
+                6:30 - 9:00 PM<br>
+                College Building, Room 521</p>
+                <p>Meet faculty. See work. Ask questions.</p>
+            </div>
+        </section>
+    </main>
+
+            <footer>
+                <p>Art & Computation — <a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a></p>
+            </footer>
+        </div>
+
+        <!-- Right Column: Boxes -->
+        <div class="boxes-column">
+            <!-- Toolbox: Draw controls -->
+            <div class="draw-controls">
+                <button id="draw-toggle">Draw Mode: OFF</button>
+                <button id="clear-canvas">Clear Canvas</button>
+                <div id="color-picker" style="display: none;">
+                    <button class="color-btn" data-color="#FFFFFF">⚪</button>
+                    <button class="color-btn" data-color="#000000">⚫</button>
+                    <button class="color-btn" data-color="#00FF00">🟢</button>
+                </div>
+            </div>
+
+            <!-- Agentbox: Auto-rotating image ticker -->
+            <div id="agentbox">
+                <!-- Auto-rotating images -->
+            </div>
+        </div>
+    </div>
+
+    <script src="sketches/macpaint-pencil.js"></script>
+    <script src="header-sketches.js"></script>
+    <script src="draw.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+</html>

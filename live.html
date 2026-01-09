@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live — Art & Computation at RISD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="draw-layer"></canvas>
+
+    <div class="layout-container">
+        <!-- Left Column: Main Content -->
+        <div class="content-column">
+            <header>
+        <canvas id="header-sketch" role="img" aria-label="Art and Computation at RISD"></canvas>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="work.html">Work</a>
+            <a href="people.html">People</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="join.html">How to Join</a>
+            <a href="live.html" class="current">Live</a>
+        </nav>
+    </header>
+
+    <main class="slideshow-main">
+        <section>
+            <h2>Live Feed</h2>
+            <p>Student work, faculty projects, and studio life. Auto-cycling through 128 images. Use arrow keys or buttons to navigate.</p>
+        </section>
+
+        <div id="slideshow-container" class="slideshow-container">
+            <!-- Images will be dynamically loaded here by slideshow.js -->
+        </div>
+
+        <div class="slideshow-controls">
+            <button id="prev-slide">← Prev</button>
+            <span id="slide-counter">1 / 128</span>
+            <button id="next-slide">Next →</button>
+            <button id="pause-play">Pause</button>
+        </div>
+    </main>
+
+            <footer>
+                <p>Art & Computation — <a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a></p>
+            </footer>
+        </div>
+
+        <!-- Right Column: Boxes -->
+        <div class="boxes-column">
+            <!-- Toolbox: Draw controls -->
+            <div class="draw-controls">
+                <button id="draw-toggle">Draw Mode: OFF</button>
+                <button id="clear-canvas">Clear Canvas</button>
+                <div id="color-picker" style="display: none;">
+                    <button class="color-btn" data-color="#FFFFFF">⚪</button>
+                    <button class="color-btn" data-color="#000000">⚫</button>
+                    <button class="color-btn" data-color="#00FF00">🟢</button>
+                </div>
+            </div>
+
+            <!-- Agentbox: Auto-rotating image ticker -->
+            <div id="agentbox">
+                <!-- Auto-rotating images -->
+            </div>
+        </div>
+    </div>
+
+    <script src="sketches/macpaint-pencil.js"></script>
+    <script src="header-sketches.js"></script>
+    <script src="draw.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+</html>

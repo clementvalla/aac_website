@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Join — Art & Computation at RISD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="draw-layer"></canvas>
+
+    <div class="layout-container">
+        <!-- Left Column: Main Content -->
+        <div class="content-column">
+            <header>
+        <canvas id="header-sketch" role="img" aria-label="Art and Computation at RISD"></canvas>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="work.html">Work</a>
+            <a href="people.html">People</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="join.html" class="current">How to Join</a>
+            <a href="live.html">Live</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>How to Join</h2>
+
+        <section>
+            <h3>Who This Is For</h3>
+            <p><strong>If you want to:</strong></p>
+            <ul>
+                <li>Work with computation as creative material</li>
+                <li>Make things—real prototypes, working systems, actual projects, custom digital tools</li>
+                <li>Work with AI to create new pipelines and processes</li>
+                <li>Build websites, games, work with robots, visualize data, build 3D worlds</li>
+                <li>Have flexibility to shape your own education</li>
+                <li>Keep your options open: art world, design career, tech industry, or invent your own path</li>
+                <li>Help build a new department from the ground up</li>
+                <li>Learn by doing in a studio culture</li>
+            </ul>
+            <p><strong>Then join Art & Computation.</strong></p>
+        </section>
+
+        <section>
+            <h3>Declaration Process</h3>
+            <p>[Declaration process details will be added here - contact department for current information]</p>
+        </section>
+
+        <section>
+            <h3>Timeline</h3>
+            <p><strong>Open House: Sunday, January 26, 6:30-9pm, College Building Room 521</strong></p>
+            <p><strong>Declaration deadline:</strong> [To be announced]</p>
+        </section>
+
+        <section>
+            <h3>Questions?</h3>
+            <p><strong>Email:</strong> [Department contact email]</p>
+            <p><strong>Drop by:</strong> [Office/studio location and hours]</p>
+            <p><strong>Or come to the open house</strong> and ask in person.</p>
+        </section>
+
+        <section>
+            <h3>FAQ</h3>
+
+            <div class="faq-item">
+                <p><strong>I don't know how to code. Can I still join?</strong></p>
+                <p>Yes. We teach from first principles. No prior experience required.</p>
+            </div>
+
+            <div class="faq-item">
+                <p><strong>The department is new—is that a problem?</strong></p>
+                <p>No, it's an opportunity. You get to shape what it becomes. That's part of the education: being entrepreneurial, defining the future, building something together.</p>
+            </div>
+
+            <div class="faq-item">
+                <p><strong>What kind of jobs can I get?</strong></p>
+                <p>We prepare our students for: art practice (galleries, residencies), design work (UX, interaction design, creative technology), tech companies (Google, Adobe, startups), video games, or hybrid practices that combine all of these. Computational skills open multiple pathways.</p>
+            </div>
+
+            <div class="faq-item">
+                <p><strong>What's the difference between Art & Computation and a CS program?</strong></p>
+                <p>We're not training programmers. We're teaching you to work with computation as a creative medium. Technical skills are always threaded with cultural critique. You learn to build your own tools, question technology's impact, and use computation to make art and design that matters.</p>
+            </div>
+
+            <div class="faq-item">
+                <p><strong>How much student work is there to look at?</strong></p>
+                <p>We're new—the gallery is growing. But that means your work will help define what Art & Computation looks like. Ground floor opportunity.</p>
+            </div>
+
+            <div class="faq-item">
+                <p><strong>What equipment/software do I need?</strong></p>
+                <p>We'll provide guidance. Most work can be done with a personal laptop and free/open-source software. As the department grows, we're building out facilities and equipment access.</p>
+            </div>
+        </section>
+    </main>
+
+            <footer>
+                <p>Art & Computation — <a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a></p>
+            </footer>
+        </div>
+
+        <!-- Right Column: Boxes -->
+        <div class="boxes-column">
+            <!-- Toolbox: Draw controls -->
+            <div class="draw-controls">
+                <button id="draw-toggle">Draw Mode: OFF</button>
+                <button id="clear-canvas">Clear Canvas</button>
+                <div id="color-picker" style="display: none;">
+                    <button class="color-btn" data-color="#FFFFFF">⚪</button>
+                    <button class="color-btn" data-color="#000000">⚫</button>
+                    <button class="color-btn" data-color="#00FF00">🟢</button>
+                </div>
+            </div>
+
+            <!-- Agentbox: Auto-rotating image ticker -->
+            <div id="agentbox">
+                <!-- Auto-rotating images -->
+            </div>
+        </div>
+    </div>
+
+    <script src="sketches/macpaint-pencil.js"></script>
+    <script src="header-sketches.js"></script>
+    <script src="draw.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+</html>

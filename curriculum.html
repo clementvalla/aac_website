@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum — Art & Computation at RISD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="draw-layer"></canvas>
+
+    <div class="layout-container">
+        <!-- Left Column: Main Content -->
+        <div class="content-column">
+            <header>
+        <canvas id="header-sketch" role="img" aria-label="Art and Computation at RISD"></canvas>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="work.html">Work</a>
+            <a href="people.html">People</a>
+            <a href="curriculum.html" class="current">Curriculum</a>
+            <a href="join.html">How to Join</a>
+            <a href="live.html">Live</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Curriculum</h2>
+
+        <section>
+            <h3>Structure & Flexibility</h3>
+            <p>Art & Computation gives you one of RISD's most flexible curricula. The major requires 51 credits combining core studios, a program sequence in computation, and lots of electives you choose.</p>
+
+            <p>This means room to:</p>
+            <ul>
+                <li>Combine with other majors</li>
+                <li>Follow your interests as they develop</li>
+                <li>Take risks and experiment</li>
+                <li>Shape your own path through the department</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Degree Requirements (120 total credits)</h3>
+            <ul>
+                <li><strong>First-Year Foundation:</strong> 18 credits</li>
+                <li><strong>Liberal Arts:</strong> 39 credits</li>
+                <li><strong>Non-Major Studio Electives:</strong> 12 credits (any department, including Brown)</li>
+                <li><strong>Major Credits:</strong> 51 credits total
+                    <ul>
+                        <li>CTC Core Studios: 21 credits</li>
+                        <li>Art & Computation Sequence: 18 credits</li>
+                        <li>Department Electives: 6 credits</li>
+                        <li>Open Electives: 6 credits</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Art & Computation Program Sequence (18 credits)</h3>
+
+            <h4>Sophomore Year</h4>
+            <ul>
+                <li>Introduction to Computation (3 credits)</li>
+                <li>Introduction to Physical Computation (3 credits)</li>
+                <li>Seminar: Histories and Futures of Computational Art & Design (3 credits)</li>
+            </ul>
+
+            <h4>Junior Year</h4>
+            <ul>
+                <li>Materializing Code (3 credits)</li>
+                <li>Human-Machine Interactions (3 credits)</li>
+                <li>Seminar: Critical Issues in Technology (3 credits)</li>
+            </ul>
+
+            <p>These courses teach programming, physical computing, computer vision, generative systems, and more—always threaded with critical and cultural context.</p>
+        </section>
+
+        <section>
+            <h3>CTC Core Studios (21 credits)</h3>
+            <ul>
+                <li>CTC Core Studio 1 (Sophomore Fall, 3 credits)</li>
+                <li>CTC Core Studio 2 (Sophomore Spring, 3 credits)</li>
+                <li>CTC Core Studio 3 (Junior Fall, 3 credits)</li>
+                <li>CTC Core Studio 4 (Junior Spring, 3 credits)</li>
+                <li>CTC Core Studio 5 (Senior Fall, 3 credits)</li>
+                <li>Degree Project (Senior Spring, 6 credits)</li>
+            </ul>
+
+            <p>Core studios bring together students across Art & Computation and Sound, creating interdisciplinary studio culture and collaborative work.</p>
+        </section>
+
+        <section>
+            <h3>Electives (24 credits total across categories)</h3>
+            <p>This is where you shape your own education:</p>
+            <ul>
+                <li><strong>Department Electives</strong> (6 credits in CTC)</li>
+                <li><strong>Open Electives</strong> (6 credits anywhere—CTC or other departments)</li>
+                <li><strong>Non-Major Electives</strong> (12 credits outside CTC, including Brown University)</li>
+            </ul>
+
+            <p>Use electives to:</p>
+            <ul>
+                <li>Deepen computational skills</li>
+                <li>Combine with design, sculpture, film, illustration, anything</li>
+                <li>Pursue Brown courses in CS, philosophy, critical theory</li>
+                <li>Build your own hybrid practice</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Sample Four-Year Path</h3>
+            <p><strong>Sophomore</strong> - Core studios, intro computation courses, begin exploring electives</p>
+
+            <p><strong>Junior</strong> - Core studios, advanced computation courses (materializing code, human-machine interaction), more electives to shape your focus</p>
+
+            <p><strong>Senior</strong> - Final core studio, degree project, electives to complete your path</p>
+
+            <p>But this is just one path. The structure flexes to accommodate different interests and timelines.</p>
+        </section>
+
+        <section>
+            <h3>No Prerequisites Required</h3>
+            <p>You don't need programming experience. We teach from first principles. What you need is curiosity about computational systems and willingness to learn through making.</p>
+        </section>
+
+        <section>
+            <h3>Combining with Other Programs</h3>
+            <p>Art & Computation works alongside any other RISD program. Double major. Add a concentration. Use electives to build bridges between departments. The curriculum is designed for this.</p>
+        </section>
+    </main>
+
+            <footer>
+                <p>Art & Computation — <a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a></p>
+            </footer>
+        </div>
+
+        <!-- Right Column: Boxes -->
+        <div class="boxes-column">
+            <!-- Toolbox: Draw controls -->
+            <div class="draw-controls">
+                <button id="draw-toggle">Draw Mode: OFF</button>
+                <button id="clear-canvas">Clear Canvas</button>
+                <div id="color-picker" style="display: none;">
+                    <button class="color-btn" data-color="#FFFFFF">⚪</button>
+                    <button class="color-btn" data-color="#000000">⚫</button>
+                    <button class="color-btn" data-color="#00FF00">🟢</button>
+                </div>
+            </div>
+
+            <!-- Agentbox: Auto-rotating image ticker -->
+            <div id="agentbox">
+                <!-- Auto-rotating images -->
+            </div>
+        </div>
+    </div>
+
+    <script src="sketches/macpaint-pencil.js"></script>
+    <script src="header-sketches.js"></script>
+    <script src="draw.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+</html>

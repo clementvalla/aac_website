@@ -1,0 +1,613 @@
+/* Art & Computation at RISD - Brutalist Stylesheet */
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Custom Properties */
+:root {
+    --bg-color: #000000;
+    --text-color: #FFFFFF;
+    --accent-color: #00FF00;
+    --link-color: #00FF00;
+    --link-visited: #00AAAA;
+}
+
+/* Base Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Two-Column Layout Container */
+.layout-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Left Column: Content */
+.content-column {
+    flex: 1;
+    min-width: 0; /* Allows flex item to shrink below content size */
+}
+
+/* Right Column: Boxes */
+.boxes-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 2rem;
+    align-self: flex-start;
+    z-index: 10001; /* Above draw canvas */
+}
+
+/* Typography */
+h1 {
+    font-size: 5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 3rem 0 1.5rem;
+    line-height: 1.1;
+}
+
+h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+    line-height: 1.2;
+}
+
+h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 1.5rem 0 0.75rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+}
+
+ul, ol {
+    margin-bottom: 1.5rem;
+    margin-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+strong {
+    font-weight: bold;
+}
+
+/* Links */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:visited {
+    color: var(--link-visited);
+}
+
+a:hover {
+    background: var(--link-color);
+    color: var(--bg-color);
+}
+
+/* Header */
+header {
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--text-color);
+}
+
+/* Header Canvas Sketch */
+#header-sketch {
+    display: block;
+    width: 100%;
+    height: 7rem;
+    margin-bottom: 2rem;
+    background: transparent;
+}
+
+/* Main Layout */
+main {
+    display: block;
+}
+
+/* Agentbox: Image ticker */
+#agentbox {
+    border: 2px solid var(--text-color);
+    padding: 1rem;
+    background: var(--bg-color);
+    box-sizing: border-box;
+}
+
+#agentbox img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Navigation */
+nav {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+nav a {
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a.current {
+    text-decoration: underline;
+}
+
+/* Main Content */
+main {
+    margin-bottom: 4rem;
+}
+
+section {
+    margin-bottom: 4rem;
+}
+
+/* Hero Section */
+.hero h2 {
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+/* Event Box */
+.event-box {
+    border: 2px solid var(--text-color);
+    padding: 2rem;
+    margin: 2rem 0;
+    max-width: 600px;
+}
+
+.event-box p {
+    margin-bottom: 1rem;
+}
+
+.event-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* Gallery */
+.gallery-filters {
+    margin-bottom: 2rem;
+}
+
+.gallery-filters p {
+    display: inline;
+    margin-right: 1rem;
+}
+
+.filter-link {
+    display: inline-block;
+    margin-right: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-link.active {
+    background: var(--link-color);
+    color: var(--bg-color);
+    padding: 0 0.25rem;
+}
+
+.gallery {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-placeholder {
+    border: 2px solid var(--text-color);
+    padding: 2rem;
+}
+
+.gallery-item {
+    border: 1px solid var(--text-color);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--text-color);
+}
+
+.gallery-item-info {
+    padding: 1rem;
+}
+
+.gallery-item-title {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.gallery-item-creator {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-item-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* People / Faculty Lists */
+.faculty-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.faculty-list li {
+    margin-bottom: 0.75rem;
+}
+
+/* FAQ */
+.faq-item {
+    margin-bottom: 2rem;
+    max-width: 75ch;
+}
+
+.faq-item p:last-child {
+    margin-bottom: 0;
+}
+
+/* Footer */
+footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--text-color);
+    font-size: 0.9rem;
+}
+
+/* Drawing Controls (Toolbox) */
+.draw-controls {
+    background: var(--bg-color);
+    border: 2px solid var(--text-color);
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    z-index: 10000;
+}
+
+.draw-controls button {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.draw-controls button:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+}
+
+#color-picker {
+    display: flex;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.color-btn {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Drawing Canvas */
+#draw-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    cursor: crosshair;
+}
+
+#draw-layer.active {
+    pointer-events: auto;
+    border: 4px solid #00FF00; /* Heavy green border when draw mode is on */
+    box-sizing: border-box;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    #header-sketch {
+        height: 3rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .event-box {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #header-sketch {
+        height: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+        max-width: 100%;
+    }
+
+    .draw-controls,
+    #draw-layer {
+        display: none;
+    }
+
+    header {
+        border-bottom: 2px solid black;
+    }
+
+    footer {
+        border-top: 2px solid black;
+    }
+
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    section {
+        page-break-inside: avoid;
+    }
+}
+
+/* Accessibility */
+a:focus,
+button:focus {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ========================================
+   SLIDESHOW / TICKER STYLES
+   ======================================== */
+
+/* Live.html full slideshow - override grid */
+.slideshow-main {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.slideshow-container {
+    width: 100%;
+    min-height: 600px;
+    background: var(--bg-color);
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+}
+
+.slideshow-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.slideshow-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 2px solid var(--text-color);
+    background: var(--bg-color);
+}
+
+.slideshow-controls button {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.slideshow-controls button:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+}
+
+#slide-counter {
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Homepage hero grid with ticker */
+.hero {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    border: 2px solid var(--text-color);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hero-content h2 {
+    margin-top: 0;
+}
+
+.hero-image-ticker {
+    min-height: 300px;
+    overflow: hidden;
+    background: var(--bg-color);
+}
+
+.hero-image-ticker img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Image interruptions */
+.image-interruption {
+    width: 100%;
+    margin: 3rem 0;
+    overflow: hidden;
+}
+
+.image-interruption img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-interruption.half {
+    width: 50%;
+    margin: 2rem auto;
+}
+
+.image-interruption.raw {
+    margin: 4rem 0;
+}
+
+/* ========================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ======================================== */
+
+/* Window < 800px: Mobile - Hide boxes, content full width */
+@media (max-width: 799px) {
+    .boxes-column {
+        display: none;
+    }
+
+    .layout-container {
+        padding: 1rem;
+    }
+}
+
+/* Window 800px+: Show both columns */
+@media (min-width: 800px) {
+    .content-column {
+        flex: 0 1 750px; /* Grow to 750px max, then stop */
+    }
+
+    .boxes-column {
+        flex: 0 0 300px; /* Fixed at 300px, never grow or shrink */
+    }
+
+    /* Add spacer between columns when there's extra room */
+    .layout-container {
+        justify-content: space-between;
+    }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .slideshow-container {
+        min-height: 300px;
+    }
+
+    .slideshow-controls {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .slideshow-controls button {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .image-interruption.half {
+        width: 100%;
+    }
+}
