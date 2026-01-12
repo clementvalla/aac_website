@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathways — Art & Computation at RISD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Pathways-specific styles */
+        .pathways-image-link {
+            display: block;
+            margin: 2rem 0;
+            border: 2px solid var(--text-color);
+            transition: border-color 0.2s;
+        }
+
+        .pathways-image-link:hover {
+            border-color: var(--link-color);
+        }
+
+        .pathways-image-link img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="draw-layer"></canvas>
+
+    <div class="layout-container">
+        <!-- Left Column: Main Content -->
+        <div class="content-column">
+            <header>
+        <h1 class="site-title-mobile">Art and Computation</h1>
+        <canvas id="header-sketch" role="img" aria-label="Art and Computation at RISD"></canvas>
+        <nav class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="work.html">Artists We Admire</a>
+            <a href="people.html">People</a>
+            <a href="curriculum.html">Curriculum</a>
+            <a href="pathways.html" class="current">Pathways</a>
+            <a href="events.html">Events</a>
+            <a href="join.html">How to Join</a>
+            <a href="live.html">Live</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Pathways</h2>
+
+        <p>Art & Computation offers multiple pathways through the curriculum. This diagram shows how different courses map onto the department's current focus areas. At the center of everything we do is the relationship between humans and computers.</p>
+
+        <a href="https://www.risd.edu/academics/art-computation/courses" target="_blank" class="pathways-image-link">
+            <img src="assets/ctc-pathways.png" alt="Course pathways diagram showing five focus areas: Generative Art, Worldbuilding and Gaming, Physical Computing, Digital Imaging, and Web and Networks, with Human-Machine relationships at the center">
+        </a>
+
+        <section>
+            <h3>Five Focus Areas</h3>
+            <p>The pathways diagram visualizes how our curriculum connects across five core areas:</p>
+            <ul>
+                <li><strong>Generative Art</strong></li>
+                <li><strong>Worldbuilding and Gaming</strong></li>
+                <li><strong>Physical Computing</strong></li>
+                <li><strong>Digital Imaging</strong></li>
+                <li><strong>Web and Networks</strong></li>
+            </ul>
+            <p>These focus areas can change over time depending on student interest and faculty work.</p>
+        </section>
+
+        <section>
+            <h3>Multiple Paths</h3>
+            <p>These aren't rigid tracks—they're overlapping territories. Most courses touch multiple areas. Your electives and independent projects let you emphasize certain territories over others, or forge your own hybrid approach.</p>
+
+            <p>The curriculum's flexibility means you define your own pathway through these territories.</p>
+        </section>
+    </main>
+
+            <footer>
+                <p>Art & Computation — <a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a> — College Building 521</p>
+            </footer>
+        </div>
+
+        <!-- Right Column: Boxes -->
+        <div class="boxes-column" id="sidebar-container">
+            <!-- Sidebar content loaded from sidebar.html -->
+        </div>
+    </div>
+
+    <script src="load-sidebar.js"></script>
+    <script src="sketches/macpaint-pencil.js"></script>
+    <script src="header-sketches.js"></script>
+    <script src="draw.js"></script>
+    <script src="images-list.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+</html>

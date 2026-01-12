@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTC Pathways - Art & Computation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            overflow: hidden;
+        }
+        
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #canvas {
+            display: block;
+            cursor: default;
+        }
+        
+        #canvas.edit-mode {
+            cursor: move;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        #tooltip.visible {
+            opacity: 1;
+        }
+        
+        #tooltip .course-code {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        #tooltip .course-title {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 6px;
+        }
+        
+        #tooltip .course-description {
+            font-size: 12px;
+            line-height: 1.4;
+            opacity: 0.8;
+        }
+        
+        #controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 100;
+        }
+        
+        #controls.visible {
+            display: block;
+        }
+        
+        #controls h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        #controls button {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            margin-bottom: 8px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        #controls button:hover {
+            background: #0051D5;
+        }
+        
+        #controls button:last-child {
+            margin-bottom: 0;
+        }
+        
+        #edit-indicator {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #FF3B30;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(255,59,48,0.3);
+            display: none;
+            z-index: 100;
+        }
+        
+        #edit-indicator.visible {
+            display: block;
+        }
+        
+        #json-output {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            max-width: 80vw;
+            max-height: 80vh;
+            overflow: auto;
+            display: none;
+            z-index: 200;
+        }
+        
+        #json-output.visible {
+            display: block;
+        }
+        
+        #json-output pre {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        #json-output button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 150;
+        }
+        
+        .overlay.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="tooltip">
+            <div class="course-code"></div>
+            <div class="course-title"></div>
+            <div class="course-description"></div>
+        </div>
+    </div>
+    
+    <div id="edit-indicator">✏️ EDIT MODE</div>
+    
+    <div id="controls">
+        <h3>Edit Controls</h3>
+        <button id="export-btn">Export JSON</button>
+        <button id="download-btn">Download Image</button>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    <div id="json-output">
+        <h3 style="margin-bottom: 12px;">Updated JSON Data</h3>
+        <pre id="json-content"></pre>
+        <button id="copy-btn">Copy to Clipboard</button>
+        <button id="close-json-btn">Close</button>
+    </div>
+
+    <script>
+        // Configuration
+        const USE_GENERATED_BACKGROUND = true; // Set to false to use image file
+        const BACKGROUND_IMAGE_PATH = 'pathways.png';
+        const DATA_PATH = 'pathways-data.json';
+
+        // Background generation settings
+        const CANVAS_SIZE = 1600; // Internal canvas size for generated background
+        const CIRCLE_COLORS = [
+            '#f57872', // Pink/salmon (brighter, more saturated)
+            '#f56eb5', // Pink/magenta (brighter, more saturated)
+            '#f5e84d', // Yellow (replacing blue/lavender)
+            '#4dcef5', // Cyan (brighter, more saturated)
+            '#50e090'  // Green/mint (brighter, more saturated)
+        ];
+
+        // State
+        let canvas, ctx;
+        let data = null;
+        let backgroundImage = null;
+        let isEditMode = false;
+        let draggedItem = null;
+        let dragOffset = { x: 0, y: 0 };
+        let scale = 1;
+        let hoveredCourse = null;
+        
+        // Initialize
+        async function init() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Check for edit mode
+            isEditMode = window.location.hash === '#edit';
+            updateEditUI();
+            
+            // Load data and image
+            await loadData();
+            await loadBackgroundImage();
+            
+            // Setup canvas
+            setupCanvas();
+            
+            // Add event listeners
+            setupEventListeners();
+            
+            // Initial render
+            render();
+        }
+        
+        async function loadData() {
+            try {
+                const response = await fetch(DATA_PATH);
+                data = await response.json();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Failed to load course data');
+            }
+        }
+        
+        function generateGradientBackground() {
+            const centerX = CANVAS_SIZE / 2;
+            const centerY = CANVAS_SIZE / 2;
+            const radius = CANVAS_SIZE * 0.24; // Circle radius (smaller to avoid cropping)
+            const orbitRadius = CANVAS_SIZE * 0.22; // Distance from center
+            const centerCircleRadius = radius * 1.4; // Bigger center circle
+            const blurRadius = centerCircleRadius * 1.6; // Blur area radius - extends beyond white circle
+
+            // Calculate positions for 5 circles evenly distributed radially (72° apart)
+            const positions = [];
+            const angleOffset = -Math.PI / 2; // Start from top (12 o'clock position)
+            for (let i = 0; i < 5; i++) {
+                const angle = angleOffset + (i * 2 * Math.PI / 5); // 72° apart
+                positions.push({
+                    x: centerX + orbitRadius * Math.cos(angle),
+                    y: centerY + orbitRadius * Math.sin(angle)
+                });
+            }
+
+            // Helper function to draw the circles
+            function drawCircles(ctx) {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+                
+                ctx.globalCompositeOperation = 'multiply';
+                positions.forEach((pos, i) => {
+                    ctx.fillStyle = CIRCLE_COLORS[i];
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalCompositeOperation = 'source-over';
+
+                // Add white center circle with radial gradient
+                const centerGradient = ctx.createRadialGradient(
+                    centerX, centerY, 0,
+                    centerX, centerY, centerCircleRadius
+                );
+                centerGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                centerGradient.addColorStop(0.4, 'rgba(255, 255, 255, 1)');
+                centerGradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.7)');
+                centerGradient.addColorStop(0.85, 'rgba(255, 255, 255, 0.2)');
+                centerGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.fillStyle = centerGradient;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, centerCircleRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Create sharp canvas
+            const sharpCanvas = document.createElement('canvas');
+            sharpCanvas.width = CANVAS_SIZE;
+            sharpCanvas.height = CANVAS_SIZE;
+            const sharpCtx = sharpCanvas.getContext('2d');
+            drawCircles(sharpCtx);
+
+            // Create blurred canvas
+            const blurCanvas = document.createElement('canvas');
+            blurCanvas.width = CANVAS_SIZE;
+            blurCanvas.height = CANVAS_SIZE;
+            const blurCtx = blurCanvas.getContext('2d');
+            blurCtx.filter = 'blur(35px)';
+            drawCircles(blurCtx);
+            blurCtx.filter = 'none';
+
+            // Create final composite canvas
+            const bgCanvas = document.createElement('canvas');
+            bgCanvas.width = CANVAS_SIZE;
+            bgCanvas.height = CANVAS_SIZE;
+            const bgCtx = bgCanvas.getContext('2d');
+
+            // Start with the sharp version
+            bgCtx.drawImage(sharpCanvas, 0, 0);
+
+            // Create mask for where blur should appear (center only)
+            const maskGradient = bgCtx.createRadialGradient(
+                centerX, centerY, 0,
+                centerX, centerY, blurRadius
+            );
+            maskGradient.addColorStop(0, 'rgba(255,255,255,1)');
+            maskGradient.addColorStop(0.6, 'rgba(255,255,255,0.8)');
+            maskGradient.addColorStop(0.85, 'rgba(255,255,255,0.3)');
+            maskGradient.addColorStop(1, 'rgba(255,255,255,0)');
+
+            // Create masked blur canvas
+            const maskedBlurCanvas = document.createElement('canvas');
+            maskedBlurCanvas.width = CANVAS_SIZE;
+            maskedBlurCanvas.height = CANVAS_SIZE;
+            const maskedBlurCtx = maskedBlurCanvas.getContext('2d');
+            maskedBlurCtx.drawImage(blurCanvas, 0, 0);
+            maskedBlurCtx.globalCompositeOperation = 'destination-in';
+            maskedBlurCtx.fillStyle = maskGradient;
+            maskedBlurCtx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+            // Cut out center from sharp canvas and composite blur there
+            bgCtx.globalCompositeOperation = 'destination-out';
+            bgCtx.fillStyle = maskGradient;
+            bgCtx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+            bgCtx.globalCompositeOperation = 'source-over';
+            bgCtx.drawImage(maskedBlurCanvas, 0, 0);
+
+            // Convert to image
+            return new Promise((resolve) => {
+                backgroundImage = new Image();
+                backgroundImage.onload = resolve;
+                backgroundImage.src = bgCanvas.toDataURL();
+            });
+        }
+
+        async function loadBackgroundImage() {
+            if (USE_GENERATED_BACKGROUND) {
+                return generateGradientBackground();
+            } else {
+                return new Promise((resolve, reject) => {
+                    backgroundImage = new Image();
+                    backgroundImage.onload = resolve;
+                    backgroundImage.onerror = reject;
+                    backgroundImage.src = BACKGROUND_IMAGE_PATH;
+                });
+            }
+        }
+        
+        function setupCanvas() {
+            // Get device pixel ratio for high-DPI displays
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Set display size (css pixels)
+            const displayWidth = window.innerWidth;
+            const displayHeight = window.innerHeight;
+            
+            // Set actual canvas size (accounting for pixel ratio)
+            canvas.width = displayWidth * dpr;
+            canvas.height = displayHeight * dpr;
+            
+            // Set display size via CSS
+            canvas.style.width = displayWidth + 'px';
+            canvas.style.height = displayHeight + 'px';
+            
+            // Scale all drawing operations by dpr
+            ctx.scale(dpr, dpr);
+
+            // Calculate scale to fit background image to screen while maintaining aspect ratio
+            const scaleX = displayWidth / backgroundImage.width;
+            const scaleY = displayHeight / backgroundImage.height;
+            scale = Math.min(scaleX, scaleY); // Fit within the screen
+
+            // Center the image
+            const offsetX = (displayWidth - backgroundImage.width * scale) / 2;
+            const offsetY = (displayHeight - backgroundImage.height * scale) / 2;
+
+            // Store offsets for coordinate conversion
+            canvas.offsetX = offsetX;
+            canvas.offsetY = offsetY;
+        }
+        
+        function setupEventListeners() {
+            // Mouse events for dragging in edit mode
+            canvas.addEventListener('mousedown', handleMouseDown);
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('mouseup', handleMouseUp);
+            canvas.addEventListener('mouseleave', handleMouseLeave);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouchStart);
+            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.addEventListener('touchend', handleTouchEnd);
+            
+            // Window resize
+            window.addEventListener('resize', () => {
+                setupCanvas();
+                render();
+            });
+            
+            // Edit mode controls
+            document.getElementById('export-btn').addEventListener('click', exportJSON);
+            document.getElementById('download-btn').addEventListener('click', downloadImage);
+            document.getElementById('copy-btn').addEventListener('click', copyJSON);
+            document.getElementById('close-json-btn').addEventListener('click', closeJSONModal);
+            document.getElementById('overlay').addEventListener('click', closeJSONModal);
+            
+            // Hash change
+            window.addEventListener('hashchange', () => {
+                isEditMode = window.location.hash === '#edit';
+                updateEditUI();
+                render();
+            });
+
+            // Keyboard shortcut 's' to save in edit mode
+            window.addEventListener('keydown', (e) => {
+                if (isEditMode && e.key === 's' && !e.metaKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    saveJSON();
+                }
+            });
+
+            // Handle clicks for course links
+            canvas.addEventListener('click', (e) => {
+                if (isEditMode) return;
+
+                const pos = getMousePos(e);
+                const found = findItemAtPosition(pos.x, pos.y);
+
+                if (found && (found.type === 'course' || found.type === 'class')) {
+                    window.open('https://www.risd.edu/academics/art-computation/courses', '_blank');
+                }
+            });
+        }
+        
+        function updateEditUI() {
+            const indicator = document.getElementById('edit-indicator');
+            const controls = document.getElementById('controls');
+            
+            if (isEditMode) {
+                indicator.classList.add('visible');
+                controls.classList.add('visible');
+                canvas.classList.add('edit-mode');
+            } else {
+                indicator.classList.remove('visible');
+                controls.classList.remove('visible');
+                canvas.classList.remove('edit-mode');
+            }
+        }
+        
+        function render() {
+            // Clear canvas with white background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw background image - scaled and centered to fit screen
+            ctx.drawImage(
+                backgroundImage,
+                canvas.offsetX,
+                canvas.offsetY,
+                backgroundImage.width * scale,
+                backgroundImage.height * scale
+            );
+
+            // Save context and apply transforms for text
+            ctx.save();
+            ctx.translate(canvas.offsetX, canvas.offsetY);
+            ctx.scale(scale, scale);
+
+            // Draw themes
+            if (data && data.themes) {
+                data.themes.forEach(theme => {
+                    drawText(theme.text, theme.position, theme.fontSize, theme.color, 'bold');
+                });
+            }
+
+            // Draw courses
+            if (data && data.courses) {
+                data.courses.forEach(course => {
+                    const isHovered = hoveredCourse === course;
+                    drawText(
+                        course.code,
+                        course.position,
+                        course.fontSize,
+                        course.color,
+                        'normal',
+                        isHovered
+                    );
+                });
+            }
+
+            // Draw classes
+            if (data && data.classes) {
+                data.classes.forEach(classItem => {
+                    const isHovered = hoveredCourse === classItem;
+                    drawText(
+                        classItem.text,
+                        classItem.position,
+                        classItem.fontSize,
+                        classItem.color,
+                        'normal',
+                        isHovered
+                    );
+                });
+            }
+
+            ctx.restore();
+        }
+        
+        function drawText(text, position, fontSize, color, weight = 'normal', isHovered = false) {
+            const [x, y] = position;
+
+            ctx.font = `${weight} ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif`;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Handle multiline text
+            const lines = text.split('\n');
+            const lineHeight = fontSize * 1.2;
+            const totalHeight = lines.length * lineHeight;
+            const startY = y - (totalHeight - lineHeight) / 2;
+
+            // Highlight hovered items
+            if (isHovered && !isEditMode) {
+                ctx.save();
+                let maxWidth = 0;
+                lines.forEach(line => {
+                    const metrics = ctx.measureText(line);
+                    maxWidth = Math.max(maxWidth, metrics.width);
+                });
+                const padding = 8;
+                ctx.fillStyle = 'rgba(0, 122, 255, 0.1)';
+                ctx.fillRect(
+                    x - maxWidth / 2 - padding,
+                    startY - fontSize / 2 - padding,
+                    maxWidth + padding * 2,
+                    totalHeight + padding * 2
+                );
+                ctx.restore();
+            }
+
+            ctx.fillStyle = color;
+            lines.forEach((line, index) => {
+                ctx.fillText(line, x, startY + index * lineHeight);
+            });
+        }
+        
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - rect.left - canvas.offsetX) / scale,
+                y: (e.clientY - rect.top - canvas.offsetY) / scale
+            };
+        }
+
+        function getTouchPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            return {
+                x: (touch.clientX - rect.left - canvas.offsetX) / scale,
+                y: (touch.clientY - rect.top - canvas.offsetY) / scale
+            };
+        }
+        
+        function findItemAtPosition(x, y) {
+            if (!data) return null;
+            
+            // Check classes (in reverse order for top-to-bottom hit testing)
+            if (data.classes) {
+                for (let i = data.classes.length - 1; i >= 0; i--) {
+                    const classItem = data.classes[i];
+                    if (isPositionInText(x, y, classItem.text, classItem.position, classItem.fontSize)) {
+                        return { type: 'class', item: classItem, index: i };
+                    }
+                }
+            }
+            
+            // Check courses (in reverse order for top-to-bottom hit testing)
+            for (let i = data.courses.length - 1; i >= 0; i--) {
+                const course = data.courses[i];
+                if (isPositionInText(x, y, course.code, course.position, course.fontSize)) {
+                    return { type: 'course', item: course, index: i };
+                }
+            }
+            
+            // Check themes (only in edit mode)
+            if (isEditMode) {
+                for (let i = data.themes.length - 1; i >= 0; i--) {
+                    const theme = data.themes[i];
+                    if (isPositionInText(x, y, theme.text, theme.position, theme.fontSize)) {
+                        return { type: 'theme', item: theme, index: i };
+                    }
+                }
+            }
+            
+            return null;
+        }
+        
+        function isPositionInText(x, y, text, position, fontSize) {
+            const [textX, textY] = position;
+
+            // Approximate text bounds for multiline text
+            ctx.font = `${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif`;
+
+            const lines = text.split('\n');
+            const lineHeight = fontSize * 1.2;
+            const totalHeight = lines.length * lineHeight;
+            const startY = textY - (totalHeight - lineHeight) / 2;
+
+            let maxWidth = 0;
+            lines.forEach(line => {
+                const metrics = ctx.measureText(line);
+                maxWidth = Math.max(maxWidth, metrics.width);
+            });
+
+            return (
+                x >= textX - maxWidth / 2 &&
+                x <= textX + maxWidth / 2 &&
+                y >= startY - fontSize / 2 &&
+                y <= startY + totalHeight - fontSize / 2
+            );
+        }
+        
+        function handleMouseDown(e) {
+            if (!isEditMode) return;
+            
+            const pos = getMousePos(e);
+            const found = findItemAtPosition(pos.x, pos.y);
+            
+            if (found) {
+                draggedItem = found;
+                dragOffset = {
+                    x: pos.x - found.item.position[0],
+                    y: pos.y - found.item.position[1]
+                };
+                canvas.style.cursor = 'grabbing';
+            }
+        }
+        
+        function handleMouseMove(e) {
+            const pos = getMousePos(e);
+            
+            if (isEditMode && draggedItem) {
+                // Update position
+                draggedItem.item.position = [
+                    Math.round(pos.x - dragOffset.x),
+                    Math.round(pos.y - dragOffset.y)
+                ];
+                render();
+            } else if (!isEditMode) {
+                // Update hover state and tooltip
+                const found = findItemAtPosition(pos.x, pos.y);
+                
+                if (found && (found.type === 'course' || found.type === 'class')) {
+                    hoveredCourse = found.item;
+                    canvas.style.cursor = 'pointer';
+                    showTooltip(e, found.item);
+                } else {
+                    hoveredCourse = null;
+                    canvas.style.cursor = 'default';
+                    hideTooltip();
+                }
+                render();
+            }
+        }
+        
+        function handleMouseUp(e) {
+            if (isEditMode && draggedItem) {
+                draggedItem = null;
+                canvas.style.cursor = 'move';
+            }
+        }
+        
+        function handleMouseLeave() {
+            if (draggedItem) {
+                draggedItem = null;
+                canvas.style.cursor = 'move';
+            }
+            hoveredCourse = null;
+            hideTooltip();
+            render();
+        }
+        
+        function handleTouchStart(e) {
+            e.preventDefault();
+            if (!isEditMode) return;
+            
+            const pos = getTouchPos(e);
+            const found = findItemAtPosition(pos.x, pos.y);
+            
+            if (found) {
+                draggedItem = found;
+                dragOffset = {
+                    x: pos.x - found.item.position[0],
+                    y: pos.y - found.item.position[1]
+                };
+            }
+        }
+        
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!isEditMode || !draggedItem) return;
+            
+            const pos = getTouchPos(e);
+            draggedItem.item.position = [
+                Math.round(pos.x - dragOffset.x),
+                Math.round(pos.y - dragOffset.y)
+            ];
+            render();
+        }
+        
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            if (draggedItem) {
+                draggedItem = null;
+            }
+        }
+        
+        function showTooltip(e, course) {
+            const tooltip = document.getElementById('tooltip');
+            const codeEl = tooltip.querySelector('.course-code');
+            const titleEl = tooltip.querySelector('.course-title');
+            const descEl = tooltip.querySelector('.course-description');
+            
+            codeEl.textContent = course.code;
+            titleEl.textContent = course.title;
+            descEl.textContent = course.description;
+            
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
+            tooltip.classList.add('visible');
+        }
+        
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.remove('visible');
+        }
+        
+        function exportJSON() {
+            const jsonStr = JSON.stringify(data, null, 2);
+            document.getElementById('json-content').textContent = jsonStr;
+            document.getElementById('json-output').classList.add('visible');
+            document.getElementById('overlay').classList.add('visible');
+        }
+        
+        function copyJSON() {
+            const jsonStr = JSON.stringify(data, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                const btn = document.getElementById('copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+        
+        function closeJSONModal() {
+            document.getElementById('json-output').classList.remove('visible');
+            document.getElementById('overlay').classList.remove('visible');
+        }
+        
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'ctc-pathways.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function saveJSON() {
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'pathways-data.json';
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            // Show save indicator
+            showSaveIndicator();
+        }
+        
+        function showSaveIndicator() {
+            const indicator = document.getElementById('edit-indicator');
+            const originalText = indicator.textContent;
+            indicator.textContent = '💾 SAVED!';
+            indicator.style.background = '#34C759';
+            setTimeout(() => {
+                indicator.textContent = originalText;
+                indicator.style.background = '#FF3B30';
+            }, 1500);
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>

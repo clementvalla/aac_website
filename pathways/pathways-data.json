@@ -1,0 +1,232 @@
+{
+  "themes": [
+    {
+      "id": "human_machine",
+      "text": "HUMAN/MACHINE",
+      "position": [
+        800,
+        800
+      ],
+      "fontSize": 28,
+      "color": "#000000"
+    },
+    {
+      "id": "generative_art",
+      "text": "GENERATIVE ART",
+      "position": [
+        790,
+        129
+      ],
+      "fontSize": 24,
+      "color": "#000000"
+    },
+    {
+      "id": "digital_imaging",
+      "text": "DIGITAL\nIMAGING",
+      "position": [
+        455,
+        1338
+      ],
+      "fontSize": 24,
+      "color": "#000000"
+    },
+    {
+      "id": "physical_computing",
+      "text": "PHYSICAL\nCOMPUTING",
+      "position": [
+        1127,
+        1345
+      ],
+      "fontSize": 24,
+      "color": "#000000"
+    },
+    {
+      "id": "web_networks",
+      "text": "WEB AND\nNETWORKS",
+      "position": [
+        183,
+        586
+      ],
+      "fontSize": 24,
+      "color": "#000000"
+    },
+    {
+      "id": "worldbuilding_gaming",
+      "text": "WORLDBUILDING\nAND GAMING",
+      "position": [
+        1363,
+        590
+      ],
+      "fontSize": 24,
+      "color": "#000000"
+    }
+  ],
+  "courses": [],
+  "classes": [
+    {
+      "title": "PAINTERLY DIGITAL IMAGES",
+      "code": "CTC 1047/DM 2047",
+      "text": "CTC 1047/DM 2047\nPAINTERLY DIGITAL IMAGES",
+      "position": [
+        450,
+        986
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "GENERATIVE SYSTEMS",
+      "code": "CTC 2012",
+      "text": "CTC 2012\nGENERATIVE SYSTEMS",
+      "position": [
+        716,
+        262
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "WORLDS WITHIN: EXPRESSIONISTIC GAMES AND CREATIVE AGENCY",
+      "code": "CTC 2019",
+      "text": "CTC 2019\nWORLDS WITHIN: EXPRESSIONISTIC GAMES\nAND CREATIVE AGENCY",
+      "position": [
+        1248,
+        733
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "INTRODUCTION TO PHYSICAL COMPUTATION",
+      "code": "CTC 2102",
+      "text": "CTC 2102\nINTRODUCTION TO PHYSICAL COMPUTATION",
+      "position": [
+        1079,
+        1231
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "EXPERIMENTAL UNREAL",
+      "code": "CTC 2104",
+      "text": "CTC 2104\nEXPERIMENTAL UNREAL",
+      "position": [
+        952,
+        380
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "DRAW WITH COMPUTERS",
+      "code": "CTC 2257",
+      "text": "CTC 2257\nDRAW WITH COMPUTERS",
+      "position": [
+        670,
+        410
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "SEMINAR: HISTORIES & FUTURES OF COMPUTATIONAL ART & DESIGN",
+      "code": "CTC 2515/LAEL 2515",
+      "text": "CTC 2515/LAEL 2515\nSEMINAR: HISTORIES & FUTURES\nOF COMPUTATIONAL ART & DESIGN",
+      "position": [
+        980,
+        892
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "DIGITAL MATERIALITY",
+      "code": "CTC 2530",
+      "text": "CTC 2530\nDIGITAL MATERIALITY",
+      "position": [
+        823,
+        1160
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "EXT. REALITIES & SHARED FUTURES",
+      "code": "CTC 2018",
+      "text": "CTC 2018\nEXT. REALITIES & SHARED FUTURES",
+      "position": [
+        375,
+        739
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "GHOST IN THE MACHINE: AI STUDIO",
+      "code": "CTC 2021",
+      "text": "CTC 2021\nGHOST IN THE MACHINE: AI STUDIO",
+      "position": [
+        667,
+        550
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "STOP MAKING SENSE",
+      "code": "CTC 2105",
+      "text": "CTC 2105\nSTOP MAKING SENSE",
+      "position": [
+        637,
+        865
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "BLUEWORLD, GREENWORLD, BROWNWORLD",
+      "code": "CTC 2106",
+      "text": "CTC 2106\nBLUEWORLD, GREENWORLD, BROWNWORLD",
+      "position": [
+        495,
+        1220
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "CABINETS OF CURIOSITY",
+      "code": "CTC 2107",
+      "text": "CTC 2107\nCABINETS OF CURIOSITY",
+      "position": [
+        770,
+        1028
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "INTRODUCTION TO COMPUTATION",
+      "code": "CTC 2101",
+      "text": "CTC 2101\nINTRODUCTION TO COMPUTATION",
+      "position": [
+        779,
+        683
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    },
+    {
+      "title": "EVOLVING PICTURES",
+      "code": "CTC 2108",
+      "text": "CTC 2108\nEVOLVING PICTURES",
+      "position": [
+        1059,
+        558
+      ],
+      "fontSize": 20,
+      "color": "#333333"
+    }
+  ]
+}

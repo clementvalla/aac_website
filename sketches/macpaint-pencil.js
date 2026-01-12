@@ -18,8 +18,8 @@
             const config = {
                 text: 'Art and Computation',
                 fontSize: 50,
-                handDrawnVariance: 4,
-                drawSpeed: 0.5,
+                handDrawnVariance: 8,
+                drawSpeed: 1.5,
                 pencilSize: 30,
                 pencilOffsetX: -15,
                 pencilOffsetY: -25
