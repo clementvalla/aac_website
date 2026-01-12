@@ -102,42 +102,16 @@
         </div>
 
         <!-- Right Column: Boxes -->
-        <div class="boxes-column">
-            <!-- Navigation box -->
-            <nav class="nav-desktop">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="work.html">Artists We Admire</a>
-                <a href="people.html" class="current">People</a>
-                <a href="curriculum.html">Curriculum</a>
-                <a href="join.html">How to Join</a>
-                <a href="live.html">Live</a>
-            </nav>
-
-            <!-- Separator line -->
-            <div class="nav-separator"></div>
-
-            <!-- Toolbox: Draw controls -->
-            <div class="draw-controls">
-                <button id="draw-toggle">Draw Mode: OFF</button>
-                <button id="clear-canvas">Clear Canvas</button>
-                <div id="color-picker" style="display: none;">
-                    <button class="color-btn" data-color="#FFFFFF">⚪</button>
-                    <button class="color-btn" data-color="#000000">⚫</button>
-                    <button class="color-btn" data-color="#00FF00">🟢</button>
-                </div>
-            </div>
-
-            <!-- Agentbox: Auto-rotating image ticker -->
-            <div id="agentbox">
-                <!-- Auto-rotating images -->
-            </div>
+        <div class="boxes-column" id="sidebar-container">
+            <!-- Sidebar content loaded from sidebar.html -->
         </div>
     </div>
 
+    <script src="load-sidebar.js"></script>
     <script src="sketches/macpaint-pencil.js"></script>
     <script src="header-sketches.js"></script>
     <script src="draw.js"></script>
+    <script src="images-list.js"></script>
     <script src="slideshow.js"></script>
 </body>
 </html>

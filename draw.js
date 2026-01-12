@@ -3,13 +3,21 @@
 (function() {
     'use strict';
 
-    // Get elements
-    const canvas = document.getElementById('draw-layer');
-    const ctx = canvas.getContext('2d');
-    const drawToggle = document.getElementById('draw-toggle');
-    const clearCanvas = document.getElementById('clear-canvas');
-    const colorPicker = document.getElementById('color-picker');
-    const colorButtons = document.querySelectorAll('.color-btn');
+    // Wait for sidebar to load before initializing
+    function initializeDrawControls() {
+        // Get elements
+        const canvas = document.getElementById('draw-layer');
+        const ctx = canvas.getContext('2d');
+        const drawToggle = document.getElementById('draw-toggle');
+        const clearCanvas = document.getElementById('clear-canvas');
+        const colorPicker = document.getElementById('color-picker');
+        const colorButtons = document.querySelectorAll('.color-btn');
+
+        // Check if elements exist (sidebar loaded)
+        if (!drawToggle || !clearCanvas || !colorPicker) {
+            console.log('Draw controls not yet loaded, waiting for sidebar...');
+            return;
+        }
 
     // State
     let isDrawing = false;
@@ -149,7 +157,17 @@
         }
     });
 
-    // Adjust canvas size when DOM content loads
-    document.addEventListener('DOMContentLoaded', resizeCanvas);
+        // Adjust canvas size when DOM content loads
+        document.addEventListener('DOMContentLoaded', resizeCanvas);
+    }
+
+    // Initialize when sidebar is loaded
+    window.addEventListener('sidebarLoaded', initializeDrawControls);
+
+    // Also try to initialize on DOMContentLoaded in case sidebar loads first
+    document.addEventListener('DOMContentLoaded', function() {
+        // Small delay to let sidebar load
+        setTimeout(initializeDrawControls, 100);
+    });
 
 })();

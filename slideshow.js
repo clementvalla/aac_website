@@ -3,135 +3,8 @@
 (function() {
     'use strict';
 
-    // All images from /images/ directory
-    const ALL_IMAGES = [
-        'images/2025-09-16 16.22.10.jpg',
-        'images/2025-09-18 11.10.47.jpg',
-        'images/2025-09-18 11.11.39.jpg',
-        'images/2025-09-22 12.43.21.jpg',
-        'images/2025-09-25 11.38.30.jpg',
-        'images/2025-09-25 11.38.45.jpg',
-        'images/2025-09-25 11.40.12.jpg',
-        'images/2025-09-25 11.40.47.jpg',
-        'images/2025-09-25 11.41.51.jpg',
-        'images/2025-09-25 11.42.10.jpg',
-        'images/2025-09-25 17.53.56.jpg',
-        'images/DSC06342.jpg',
-        'images/DSC06343.jpg',
-        'images/DSC06351.jpg',
-        'images/DSC06354.jpg',
-        'images/DSC06360.jpg',
-        'images/DSC06361.jpg',
-        'images/DSC06364.jpg',
-        'images/DSC06367.jpg',
-        'images/DSC06370.jpg',
-        'images/DSC06371.jpg',
-        'images/DSC06373.jpg',
-        'images/DSC06377.jpg',
-        'images/DSC06380.jpg',
-        'images/DSC06386.jpg',
-        'images/DSC06387.jpg',
-        'images/DSC06388.jpg',
-        'images/DSC06390.jpg',
-        'images/DSC06394.jpg',
-        'images/DSC06395.jpg',
-        'images/DSC06396.jpg',
-        'images/DSC06397.jpg',
-        'images/DSC06398.jpg',
-        'images/DSC06399.jpg',
-        'images/DSC06400.jpg',
-        'images/DSC06401.jpg',
-        'images/DSC06403.jpg',
-        'images/DSC06404.jpg',
-        'images/DSC06405.jpg',
-        'images/ctc_01.png',
-        'images/ctc_02.jpg',
-        'images/ctc_03.jpg',
-        'images/ctc_04.jpg',
-        'images/ctc_05.jpg',
-        'images/ctc_06.jpg',
-        'images/ctc_07.jpg',
-        'images/ctc_08.jpg',
-        'images/ctc_09.jpg',
-        'images/ctc_10.jpg',
-        'images/ctc_11.jpg',
-        'images/ctc_12.jpg',
-        'images/ctc_13.jpg',
-        'images/ctc_14.jpg',
-        'images/ctc_15.jpg',
-        'images/ctc_16.jpg',
-        'images/ctc_17.jpg',
-        'images/ctc_18.jpg',
-        'images/ctc_19.jpg',
-        'images/ctc_20.webp',
-        'images/ctc_21.jpg',
-        'images/ctc_22.jpg',
-        'images/ctc_23.jpg',
-        'images/ctc_24.jpg',
-        'images/ctc_25.jpg',
-        'images/ctc_26.png',
-        'images/ctc_27.jpg',
-        'images/ctc_28.png',
-        'images/ctc_29.jpg',
-        'images/ctc_31.jpg',
-        'images/ctc_32.jpg',
-        'images/ctc_33.jpg',
-        'images/ctc_34.jpg',
-        'images/ctc_35.jpg',
-        'images/ctc_36.jpg',
-        'images/ctc_37.png',
-        'images/ctc_38.jpg',
-        'images/ctc_39.png',
-        'images/ctc_40.jpg',
-        'images/ctc_41.jpg',
-        'images/ctc_42.jpg',
-        'images/ctc_43.jpg',
-        'images/ctc_44.png',
-        'images/ctc_45.jpg',
-        'images/ctc_46.png',
-        'images/ctc_47.png',
-        'images/ctc_48.png',
-        'images/ctc_49.png',
-        'images/ctc_50.png',
-        'images/ctc_51.png',
-        'images/ctc_52.jpg',
-        'images/ctc_53.png',
-        'images/ctc_54.png',
-        'images/ctc_55.jpg',
-        'images/ctc_56.png',
-        'images/ctc_57.png',
-        'images/ctc_58.png',
-        'images/ctc_59.png',
-        'images/ctc_60.png',
-        'images/ctc_61.png',
-        'images/ctc_62.png',
-        'images/ctc_63.png',
-        'images/ctc_64.png',
-        'images/ctc_65.png',
-        'images/ctc_67.png',
-        'images/ctc_68.png',
-        'images/ctc_69.png',
-        'images/ctc_70.png',
-        'images/ctc_71.png',
-        'images/ctc_72.png',
-        'images/ctc_73.png',
-        'images/ctc_74.png',
-        'images/ctc_75.png',
-        'images/ctc_76.png',
-        'images/ctc_77.png',
-        'images/ctc_78.jpg',
-        'images/ctc_79.png',
-        'images/ctc_80.jpg',
-        'images/ctc_81.jpg',
-        'images/ctc_82.png',
-        'images/ctc_83.jpg',
-        'images/ctc_84.jpg',
-        'images/ctc_85.png',
-        'images/ctc_86.jpg',
-        'images/ctc_88.jpg',
-        'images/ctc_89.jpg',
-        'images/ctc_91.jpg'
-    ];
+    // All images from /images/ directory - loaded from images-list.js
+    const ALL_IMAGES = window.ALL_IMAGES || [];
 
     // Curated subset for homepage hero ticker
     const HERO_IMAGES = [
@@ -414,8 +287,15 @@
         });
     });
 
-    // Initialize agentbox with random images
-    if (document.getElementById('agentbox')) {
+    // Initialize agentbox with random images - wait for sidebar to load
+    function initializeAgentbox() {
+        const agentbox = document.getElementById('agentbox');
+
+        if (!agentbox) {
+            console.log('Agentbox not yet loaded, waiting for sidebar...');
+            return;
+        }
+
         // Shuffle function
         function shuffleArray(array) {
             const shuffled = array.slice();
@@ -437,7 +317,71 @@
             showControls: false,
             keyboard: false
         });
+
+        // Add click handler to open fullscreen
+        agentbox.style.cursor = 'pointer';
+        agentbox.addEventListener('click', function() {
+            const img = agentbox.querySelector('img');
+            if (img && img.src) {
+                openFullscreen(img.src);
+            }
+        });
     }
+
+    // Fullscreen image viewer
+    function openFullscreen(imageSrc) {
+        // Create fullscreen overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'fullscreen-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        `;
+
+        // Create image
+        const img = document.createElement('img');
+        img.src = imageSrc;
+        img.style.cssText = `
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            display: block;
+        `;
+
+        overlay.appendChild(img);
+        document.body.appendChild(overlay);
+
+        // Close on click or escape
+        overlay.addEventListener('click', function() {
+            document.body.removeChild(overlay);
+        });
+
+        document.addEventListener('keydown', function closeOnEscape(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('fullscreen-overlay')) {
+                    document.body.removeChild(overlay);
+                }
+                document.removeEventListener('keydown', closeOnEscape);
+            }
+        });
+    }
+
+    // Initialize agentbox when sidebar is loaded
+    window.addEventListener('sidebarLoaded', initializeAgentbox);
+
+    // Also try to initialize on DOMContentLoaded in case sidebar loads first
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initializeAgentbox, 100);
+    });
 
     // Export createTicker for potential future use
     window.createTicker = createTicker;
