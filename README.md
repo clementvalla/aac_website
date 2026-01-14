@@ -1,6 +1,6 @@
 # Art & Computation at RISD - Website
 
-Temporary/MVP website for RISD's Art & Computation department.
+Temporary/MVP website for RISD's Art & Computation major.
 
 ## Features
 
