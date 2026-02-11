@@ -4,8 +4,8 @@
       "id": "human_machine",
       "text": "HUMAN/MACHINE",
       "position": [
-        816,
-        773
+        800,
+        800
       ],
       "fontSize": 28,
       "color": "#000000"
@@ -24,8 +24,8 @@
       "id": "digital_imaging",
       "text": "DIGITAL\nIMAGING",
       "position": [
-        231,
-        1102
+        455,
+        1338
       ],
       "fontSize": 24,
       "color": "#000000"
@@ -34,8 +34,8 @@
       "id": "physical_computing",
       "text": "PHYSICAL\nCOMPUTING",
       "position": [
-        806,
-        1459
+        1127,
+        1345
       ],
       "fontSize": 24,
       "color": "#000000"
@@ -44,8 +44,8 @@
       "id": "web_networks",
       "text": "WEB AND\nNETWORKS",
       "position": [
-        264,
-        453
+        183,
+        586
       ],
       "fontSize": 24,
       "color": "#000000"
@@ -54,18 +54,8 @@
       "id": "worldbuilding_gaming",
       "text": "WORLDBUILDING\nAND GAMING",
       "position": [
-        1301,
-        475
-      ],
-      "fontSize": 24,
-      "color": "#000000"
-    },
-    {
-      "id": "sound",
-      "text": "SOUND",
-      "position": [
-        1342,
-        1148
+        1363,
+        590
       ],
       "fontSize": 24,
       "color": "#000000"
@@ -78,8 +68,8 @@
       "code": "CTC 1047/DM 2047",
       "text": "CTC 1047/DM 2047\nPAINTERLY DIGITAL IMAGES",
       "position": [
-        337,
-        837
+        450,
+        986
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -89,8 +79,8 @@
       "code": "CTC 2012",
       "text": "CTC 2012\nGENERATIVE SYSTEMS",
       "position": [
-        811,
-        215
+        716,
+        262
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -100,8 +90,8 @@
       "code": "CTC 2019",
       "text": "CTC 2019\nWORLDS WITHIN: EXPRESSIONISTIC GAMES\nAND CREATIVE AGENCY",
       "position": [
-        1170,
-        570
+        1248,
+        733
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -111,8 +101,8 @@
       "code": "CTC 2102",
       "text": "CTC 2102\nINTRODUCTION TO PHYSICAL COMPUTATION",
       "position": [
-        795,
-        1358
+        1079,
+        1231
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -122,8 +112,8 @@
       "code": "CTC 2104",
       "text": "CTC 2104\nEXPERIMENTAL UNREAL",
       "position": [
-        839,
-        421
+        952,
+        380
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -133,8 +123,8 @@
       "code": "CTC 2257",
       "text": "CTC 2257\nDRAW WITH COMPUTERS",
       "position": [
-        489,
-        352
+        670,
+        410
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -144,8 +134,8 @@
       "code": "CTC 2515/LAEL 2515",
       "text": "CTC 2515/LAEL 2515\nSEMINAR: HISTORIES & FUTURES\nOF COMPUTATIONAL ART & DESIGN",
       "position": [
-        737,
-        885
+        980,
+        892
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -155,8 +145,8 @@
       "code": "CTC 2530",
       "text": "CTC 2530\nDIGITAL MATERIALITY",
       "position": [
-        673,
-        1102
+        823,
+        1160
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -166,8 +156,8 @@
       "code": "CTC 2018",
       "text": "CTC 2018\nEXT. REALITIES & SHARED FUTURES",
       "position": [
-        342,
-        638
+        375,
+        739
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -177,8 +167,8 @@
       "code": "CTC 2021",
       "text": "CTC 2021\nGHOST IN THE MACHINE: AI STUDIO",
       "position": [
-        538,
-        509
+        667,
+        550
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -188,8 +178,8 @@
       "code": "CTC 2105",
       "text": "CTC 2105\nSTOP MAKING SENSE",
       "position": [
-        575,
-        756
+        637,
+        865
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -210,8 +200,8 @@
       "code": "CTC 2107",
       "text": "CTC 2107\nCABINETS OF CURIOSITY",
       "position": [
-        503,
-        999
+        770,
+        1028
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -221,8 +211,8 @@
       "code": "CTC 2101",
       "text": "CTC 2101\nINTRODUCTION TO COMPUTATION",
       "position": [
-        785,
-        664
+        779,
+        683
       ],
       "fontSize": 20,
       "color": "#333333"
@@ -232,140 +222,8 @@
       "code": "CTC 2108",
       "text": "CTC 2108\nEVOLVING PICTURES",
       "position": [
-        1079,
-        343
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "PROGRAMMING SOUND: PERFORMANCE SYSTEMS",
-      "code": "SOUND 2001",
-      "text": "SOUND 2001\nPROGRAMMING SOUND:\nPERFORMANCE SYSTEMS",
-      "position": [
-        1122,
-        1265
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SONIC MAPPING: NARRATIVES, SOUNDSCAPES, AND ARCHIVES",
-      "code": "SOUND 2002",
-      "text": "SOUND 2002\nSONIC MAPPING",
-      "position": [
-        1170,
-        1095
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SOUND DESIGN: SPACES",
-      "code": "SOUND 2003",
-      "text": "SOUND 2003\nSOUND DESIGN: SPACES",
-      "position": [
-        1044,
-        860
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SPATIAL AUDIO",
-      "code": "SOUND 2006",
-      "text": "SOUND 2006\nSPATIAL AUDIO",
-      "position": [
-        1359,
-        1077
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "OF SOUND AND VISION",
-      "code": "SOUND 2007",
-      "text": "SOUND 2007\nOF SOUND AND VISION",
-      "position": [
-        1068,
-        759
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "A HANDS-ON HISTORY OF ELECTRONIC MUSIC",
-      "code": "SOUND 2008",
-      "text": "SOUND 2008\nHISTORY OF ELECTRONIC MUSIC",
-      "position": [
-        1274,
-        908
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "INTRO TO SONIC ARTS",
-      "code": "SOUND 2009",
-      "text": "SOUND 2009\nINTRO TO SONIC ARTS",
-      "position": [
-        989,
-        1047
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "MODULAR SYNTHESIS STUDIO",
-      "code": "SOUND 2010",
-      "text": "SOUND 2010\nMODULAR SYNTHESIS STUDIO",
-      "position": [
-        1327,
-        1006
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "ENVIRONMENTAL SOUND",
-      "code": "SOUND 2040",
-      "text": "SOUND 2040\nENVIRONMENTAL SOUND",
-      "position": [
-        1069,
-        1150
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SOUND SYNTHESIS: ANALOG / DIGITAL HYBRIDS",
-      "code": "SOUND 2043",
-      "text": "SOUND 2043\nSOUND SYNTHESIS",
-      "position": [
-        1268,
-        1192
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SITED SOUND: COMPOSITION & PUBLIC SPACE",
-      "code": "SOUND 2511",
-      "text": "SOUND 2511\nSITED SOUND",
-      "position": [
-        1242,
-        821
-      ],
-      "fontSize": 20,
-      "color": "#333333"
-    },
-    {
-      "title": "SONIC PRACTICES",
-      "code": "SOUND 3104",
-      "text": "SOUND 3104\nSONIC PRACTICES",
-      "position": [
-        1097,
-        971
+        1059,
+        558
       ],
       "fontSize": 20,
       "color": "#333333"

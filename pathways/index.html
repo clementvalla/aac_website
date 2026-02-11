@@ -220,13 +220,27 @@
 
         // Background generation settings
         const CANVAS_SIZE = 1600; // Internal canvas size for generated background
-        const CIRCLE_COLORS = [
+        // Base colors - will be extended dynamically if more themes exist
+        const BASE_CIRCLE_COLORS = [
             '#f57872', // Pink/salmon (brighter, more saturated)
             '#f56eb5', // Pink/magenta (brighter, more saturated)
             '#f5e84d', // Yellow (replacing blue/lavender)
             '#4dcef5', // Cyan (brighter, more saturated)
-            '#50e090'  // Green/mint (brighter, more saturated)
+            '#50e090', // Green/mint (brighter, more saturated)
+            '#b87df5', // Purple/violet
+            '#f5a24d', // Orange
+            '#5df5c0'  // Teal
         ];
+
+        // Generate a color for a given index (cycles through base colors or generates new ones)
+        function getCircleColor(index, total) {
+            if (index < BASE_CIRCLE_COLORS.length) {
+                return BASE_CIRCLE_COLORS[index];
+            }
+            // Generate additional colors using HSL for consistent saturation/lightness
+            const hue = (index * 360 / total) % 360;
+            return `hsl(${hue}, 80%, 65%)`;
+        }
 
         // State
         let canvas, ctx;
@@ -279,11 +293,20 @@
             const centerCircleRadius = radius * 1.4; // Bigger center circle
             const blurRadius = centerCircleRadius * 1.6; // Blur area radius - extends beyond white circle
 
-            // Calculate positions for 5 circles evenly distributed radially (72° apart)
+            // Get number of circles from themes in data (minus 1 for the central theme)
+            const numCircles = (data && data.themes) ? data.themes.length - 1 : 5;
+
+            // Generate colors for all circles
+            const circleColors = [];
+            for (let i = 0; i < numCircles; i++) {
+                circleColors.push(getCircleColor(i, numCircles));
+            }
+
+            // Calculate positions for circles evenly distributed radially
             const positions = [];
             const angleOffset = -Math.PI / 2; // Start from top (12 o'clock position)
-            for (let i = 0; i < 5; i++) {
-                const angle = angleOffset + (i * 2 * Math.PI / 5); // 72° apart
+            for (let i = 0; i < numCircles; i++) {
+                const angle = angleOffset + (i * 2 * Math.PI / numCircles);
                 positions.push({
                     x: centerX + orbitRadius * Math.cos(angle),
                     y: centerY + orbitRadius * Math.sin(angle)
@@ -294,10 +317,10 @@
             function drawCircles(ctx) {
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-                
+
                 ctx.globalCompositeOperation = 'multiply';
                 positions.forEach((pos, i) => {
-                    ctx.fillStyle = CIRCLE_COLORS[i];
+                    ctx.fillStyle = circleColors[i];
                     ctx.beginPath();
                     ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
                     ctx.fill();

@@ -4,34 +4,51 @@
     'use strict';
 
     // All images from /images/ directory - loaded from images-list.js
+    // Now supports both old format (strings) and new format (objects with src/title/author)
     const ALL_IMAGES = window.ALL_IMAGES || [];
+
+    // Helper to normalize image data (supports both string and object formats)
+    function normalizeImage(img) {
+        if (typeof img === 'string') {
+            return { src: img, title: '', author: '' };
+        }
+        return img;
+    }
+
+    // Shuffle array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        const shuffled = array.slice();
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
 
     // Curated subset for homepage hero ticker
     const HERO_IMAGES = [
-        'images/DSC06342.jpg',
-        'images/DSC06351.jpg',
-        'images/DSC06370.jpg',
-        'images/DSC06373.jpg',
-        'images/DSC06386.jpg',
-        'images/2025-09-25 11.38.30.jpg',
-        'images/2025-09-25 11.38.45.jpg',
-        'images/2025-09-25 11.40.12.jpg',
-        'images/ctc_01.png',
-        'images/ctc_02.jpg',
-        'images/ctc_05.jpg',
-        'images/ctc_15.jpg',
-        'images/ctc_26.png',
-        'images/ctc_28.png',
-        'images/ctc_37.png',
-        'images/ctc_39.png',
-        'images/ctc_44.png',
-        'images/ctc_45.jpg',
-        'images/ctc_52.jpg',
-        'images/ctc_55.jpg',
-        'images/ctc_78.jpg',
-        'images/ctc_80.jpg',
-        'images/ctc_82.png',
-        'images/ctc_85.png'
+        'images/students/DSC06342.jpg',
+        'images/happening/DSC06351.jpg',
+        'images/students/DSC06370.jpg',
+        'images/students/DSC06373.jpg',
+        'images/students/DSC06386.jpg',
+        'images/students/2025-09-25 11.38.30.jpg',
+        'images/students/2025-09-25 11.38.45.jpg',
+        'images/students/2025-09-25 11.40.12.jpg',
+        'images/students/ctc_01.jpg',
+        'images/faculty/ctc_05.jpg',
+        'images/students/ctc_15.jpg',
+        'images/faculty/ctc_26.jpg',
+        'images/students/ctc_28.jpg',
+        'images/students/ctc_37.jpg',
+        'images/faculty/ctc_39.jpg',
+        'images/faculty/ctc_44.jpg',
+        'images/faculty/ctc_45.jpg',
+        'images/students/ctc_52.jpg',
+        'images/faculty/ctc_55.jpg',
+        'images/students/ctc_78.jpg',
+        'images/students/ctc_82.jpg',
+        'images/students/ctc_85.jpg'
     ];
 
     /**
@@ -65,8 +82,19 @@
         function loadImage(index) {
             if (index < 0 || index >= images.length) return;
 
-            const imgPath = images[index];
-            container.innerHTML = '<img src="' + imgPath + '" alt="">';
+            const imgData = normalizeImage(images[index]);
+            const imgPath = imgData.src;
+
+            // Build HTML with optional attribution
+            let html = '<img src="' + imgPath + '" alt="">';
+            if (config.showAttribution && (imgData.title || imgData.author)) {
+                let attrText = '';
+                if (imgData.title) attrText += imgData.title;
+                if (imgData.title && imgData.author) attrText += ' — ';
+                if (imgData.author) attrText += imgData.author;
+                html += '<div class="slideshow-attribution">' + attrText + '</div>';
+            }
+            container.innerHTML = html;
 
             currentIndex = index;
             updateCounter();
@@ -77,7 +105,8 @@
         function preloadNext() {
             for (let i = 1; i <= 2; i++) {
                 const nextIndex = (currentIndex + i) % images.length;
-                const imgPath = images[nextIndex];
+                const imgData = normalizeImage(images[nextIndex]);
+                const imgPath = imgData.src;
 
                 if (!preloadedImages[imgPath]) {
                     const img = new Image();
@@ -93,7 +122,7 @@
 
             const counter = document.getElementById('slide-counter');
             if (counter) {
-                counter.textContent = (currentIndex + 1) + ' / ' + images.length;
+                counter.textContent = (currentIndex + 1);
             }
         }
 
@@ -249,15 +278,209 @@
         };
     }
 
+    /**
+     * Fullscreen slideshow mode
+     * Activated via #fullscreen hash or button click
+     */
+    let fullscreenOverlay = null;
+    let fullscreenTicker = null;
+
+    function enterFullscreenSlideshow() {
+        if (fullscreenOverlay) return; // Already in fullscreen
+
+        // Create fullscreen overlay
+        fullscreenOverlay = document.createElement('div');
+        fullscreenOverlay.id = 'fullscreen-slideshow';
+        fullscreenOverlay.innerHTML = `
+            <div class="fullscreen-title">Art and Computation</div>
+            <div class="fullscreen-image-container">
+                <img src="" alt="">
+                <div class="fullscreen-attribution"></div>
+            </div>
+            <button class="fullscreen-exit" aria-label="Exit fullscreen">✕</button>
+        `;
+        document.body.appendChild(fullscreenOverlay);
+
+        // Hide cursor after inactivity
+        let cursorTimeout;
+        function hideCursor() {
+            fullscreenOverlay.style.cursor = 'none';
+        }
+        function showCursor() {
+            fullscreenOverlay.style.cursor = 'default';
+            clearTimeout(cursorTimeout);
+            cursorTimeout = setTimeout(hideCursor, 3000);
+        }
+        fullscreenOverlay.addEventListener('mousemove', showCursor);
+        showCursor();
+
+        let currentIndex = 0;
+        let isPlaying = true;
+        let autoPlayInterval = null;
+        const images = shuffleArray(ALL_IMAGES);
+        const imgEl = fullscreenOverlay.querySelector('img');
+        const attrEl = fullscreenOverlay.querySelector('.fullscreen-attribution');
+
+        function loadImage(index) {
+            if (index < 0 || index >= images.length) return;
+            currentIndex = index;
+
+            const imgData = normalizeImage(images[index]);
+            imgEl.src = imgData.src;
+
+            // Show attribution if available
+            if (imgData.title || imgData.author) {
+                let attrText = '';
+                if (imgData.title) attrText += imgData.title;
+                if (imgData.title && imgData.author) attrText += ' — ';
+                if (imgData.author) attrText += imgData.author;
+                attrEl.textContent = attrText;
+                attrEl.style.display = 'block';
+            } else {
+                attrEl.style.display = 'none';
+            }
+        }
+
+        function nextSlide() {
+            loadImage((currentIndex + 1) % images.length);
+        }
+
+        function prevSlide() {
+            loadImage((currentIndex - 1 + images.length) % images.length);
+        }
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            isPlaying = true;
+            autoPlayInterval = setInterval(nextSlide, 5000); // 5 second interval for fullscreen
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            isPlaying = false;
+        }
+
+        function togglePausePlay() {
+            if (isPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // Exit fullscreen
+        function exitFullscreen() {
+            stopAutoPlay();
+            clearTimeout(cursorTimeout);
+            if (fullscreenOverlay) {
+                fullscreenOverlay.remove();
+                fullscreenOverlay = null;
+            }
+            // Remove hash without triggering hashchange
+            if (window.location.hash === '#fullscreen') {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+            document.removeEventListener('keydown', handleKeydown);
+        }
+
+        // Keyboard controls
+        function handleKeydown(e) {
+            if (e.key === 'Escape') {
+                exitFullscreen();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+                if (isPlaying) startAutoPlay();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+                if (isPlaying) startAutoPlay();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                togglePausePlay();
+            }
+        }
+        document.addEventListener('keydown', handleKeydown);
+
+        // Exit button
+        fullscreenOverlay.querySelector('.fullscreen-exit').addEventListener('click', exitFullscreen);
+
+        // Request browser fullscreen
+        if (fullscreenOverlay.requestFullscreen) {
+            fullscreenOverlay.requestFullscreen().catch(() => {});
+        } else if (fullscreenOverlay.webkitRequestFullscreen) {
+            fullscreenOverlay.webkitRequestFullscreen();
+        }
+
+        // Start slideshow
+        loadImage(0);
+        startAutoPlay();
+
+        // Store reference for external control
+        fullscreenTicker = {
+            next: nextSlide,
+            prev: prevSlide,
+            play: startAutoPlay,
+            pause: stopAutoPlay,
+            exit: exitFullscreen
+        };
+    }
+
+    function exitFullscreenSlideshow() {
+        if (fullscreenTicker) {
+            fullscreenTicker.exit();
+            fullscreenTicker = null;
+        }
+    }
+
+    // Check for #fullscreen hash on load
+    function checkFullscreenHash() {
+        if (window.location.hash === '#fullscreen') {
+            // Small delay to ensure page is ready
+            setTimeout(enterFullscreenSlideshow, 100);
+        }
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', function() {
+        if (window.location.hash === '#fullscreen') {
+            enterFullscreenSlideshow();
+        }
+    });
+
+    // Handle browser fullscreen exit
+    document.addEventListener('fullscreenchange', function() {
+        if (!document.fullscreenElement && fullscreenOverlay) {
+            exitFullscreenSlideshow();
+        }
+    });
+
+    // Export fullscreen functions
+    window.enterFullscreenSlideshow = enterFullscreenSlideshow;
+    window.exitFullscreenSlideshow = exitFullscreenSlideshow;
+
     // Initialize live.html full slideshow if container exists
     if (document.getElementById('slideshow-container')) {
         window.liveSlideshow = createTicker({
             containerId: 'slideshow-container',
-            images: ALL_IMAGES,
+            images: shuffleArray(ALL_IMAGES),
             interval: 2000,
             showControls: true,
-            keyboard: true
+            keyboard: true,
+            showAttribution: true
         });
+
+        // Setup fullscreen button
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', enterFullscreenSlideshow);
+        }
+
+        // Check for fullscreen hash
+        checkFullscreenHash();
     }
 
     // Initialize homepage hero ticker if container exists
@@ -294,16 +517,6 @@
         if (!agentbox) {
             console.log('Agentbox not yet loaded, waiting for sidebar...');
             return;
-        }
-
-        // Shuffle function
-        function shuffleArray(array) {
-            const shuffled = array.slice();
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
         }
 
         // Get shuffled images

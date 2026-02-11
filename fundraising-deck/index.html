@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art & Computation — Fundraising Deck</title>
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom Properties */
+        :root {
+            --bg-color: #000000;
+            --text-color: #FFFFFF;
+            --accent-color: #00FF00;
+            --link-color: #00FF00;
+        }
+
+        /* Base Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+
+        /* Slide Structure */
+        .slide {
+            min-height: 100vh;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 2px solid var(--text-color);
+        }
+
+        .slide:last-child {
+            border-bottom: none;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 5rem;
+            font-weight: bold;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            max-width: 75ch;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .lead {
+            font-size: 1.4rem;
+            line-height: 1.5;
+        }
+
+        /* Links */
+        a {
+            color: var(--link-color);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            background: var(--link-color);
+            color: var(--bg-color);
+        }
+
+        /* Logo */
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .logo-large {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-hand {
+            font-family: "Comic Sans MS", "Marker Felt", cursive;
+            letter-spacing: -2px;
+        }
+
+        /* Placeholder quote */
+        .placeholder-quote {
+            border: 2px dashed var(--text-color);
+            padding: 2rem;
+            margin-top: 3rem;
+            max-width: 600px;
+            font-style: italic;
+            opacity: 0.6;
+        }
+
+        /* Content boxes */
+        .content-box {
+            border: 2px solid var(--text-color);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box {
+            border-color: var(--accent-color);
+        }
+
+        /* Lists */
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Image grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid var(--text-color);
+            display: block;
+        }
+
+        .image-grid.large img {
+            height: 280px;
+        }
+
+        /* Two column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .two-col img {
+            width: 100%;
+            height: auto;
+            border: 2px solid var(--text-color);
+        }
+
+        /* Alumni profiles */
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .alumni-profile {
+            border: 2px solid var(--text-color);
+            padding: 2rem;
+        }
+
+        .alumni-profile h3 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .alumni-profile .tagline {
+            font-style: italic;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .alumni-profile ul {
+            margin-left: 1.25rem;
+        }
+
+        /* Giving table */
+        .giving-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .giving-table th,
+        .giving-table td {
+            border: 2px solid var(--text-color);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .giving-table th {
+            background: var(--text-color);
+            color: var(--bg-color);
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .giving-table tr:hover td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .giving-table.compact th,
+        .giving-table.compact td {
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .giving-table .or {
+            font-weight: normal;
+            opacity: 0.7;
+            font-size: 0.85em;
+        }
+
+        /* Callout grid */
+        .callout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .callout-box {
+            border: 2px solid var(--text-color);
+            padding: 1.5rem;
+        }
+
+        .callout-box h4 {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin: 0 0 0.75rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .callout-box p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Partner benefits */
+        .benefits-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .benefits-list li {
+            margin-bottom: 1.5rem;
+            padding-left: 0;
+        }
+
+        .benefits-list strong {
+            color: var(--accent-color);
+        }
+
+        /* Contact info */
+        .contact-info {
+            margin-top: 3rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Deck context label */
+        .deck-context {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        /* Navigation */
+        .slide-counter {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            z-index: 1000;
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            opacity: 0.5;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .slide {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            h2 {
+                font-size: 2.5rem;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-col,
+            .alumni-grid,
+            .callout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .giving-table th {
+                width: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid img {
+                height: 180px;
+            }
+        }
+
+        /* Print Styles - preserve slideshow appearance */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            html, body {
+                background: #000 !important;
+                color: #fff !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            .slide {
+                height: 100vh;
+                width: 100vw;
+                min-height: 0;
+                max-height: 100vh;
+                overflow: hidden;
+                page-break-after: always;
+                page-break-before: auto;
+                page-break-inside: avoid;
+                break-after: page;
+                break-inside: avoid;
+                border-bottom: none;
+                background: #000 !important;
+                padding: 3rem;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .slide:last-child {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            .slide-content {
+                max-height: 100%;
+                overflow: hidden;
+            }
+
+            .slide-counter,
+            .nav-hint {
+                display: none !important;
+            }
+
+            /* Scale down content to fit */
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; margin-bottom: 1rem; }
+            p.lead { font-size: 1.1rem; line-height: 1.4; }
+            p { font-size: 0.95rem; margin-bottom: 1rem; }
+
+            .callout-grid {
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .callout-box {
+                padding: 1rem;
+            }
+
+            .callout-box h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .callout-box p {
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+
+            .image-grid {
+                gap: 0.5rem;
+            }
+
+            .image-grid img {
+                height: 120px;
+            }
+
+            .benefits-list li {
+                margin-bottom: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .giving-table.compact th,
+            .giving-table.compact td {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            a {
+                color: var(--link-color);
+            }
+        }
+
+        @page {
+            size: 11in 8.5in landscape;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation UI (screen only) -->
+    <div class="slide-counter" id="slide-counter">1 / 7</div>
+    <div class="nav-hint" id="nav-hint">Use arrow keys to navigate</div>
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide" data-slide="1">
+        <div class="slide-content">
+            <p class="deck-context">Partnership Proposal for Anthropic</p>
+            <h1>Art & Computation</h1>
+            <p class="subtitle">A new BFA at the Rhode Island School of Design</p>
+            <div class="placeholder-quote">
+                [PLACEHOLDER: student evaluation pull quote]
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: What & Why -->
+    <section class="slide" data-slide="2">
+        <div class="slide-content">
+            <h2>What Is Art & Computation</h2>
+            <p class="lead">Computation is the dominant medium of the 21st century. Art & Computation teaches students to work with it the way RISD has always worked with materials — across disciplines, hands-on, critically. Students build their own tools and creative pipelines to make art, tell stories, and shape how technology gets made.</p>
+            <div class="callout-grid">
+                <div class="callout-box">
+                    <h4>Art School DNA</h4>
+                    <p>147 years of materiality, experimentation, and critique — now applied to computation.</p>
+                </div>
+                <div class="callout-box">
+                    <h4>Computation as Material</h4>
+                    <p>Code, algorithms, and systems as creative medium — like paint, clay, or film.</p>
+                </div>
+                <div class="callout-box">
+                    <h4>Toolbuilders, Not Users</h4>
+                    <p>Students shape technology rather than consume it. Makers of systems, not just operators.</p>
+                </div>
+                <div class="callout-box">
+                    <h4>Critical Making</h4>
+                    <p>Technical skill woven with ethics, culture, and critique from day one.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: What Students Make -->
+    <section class="slide" data-slide="3">
+        <div class="slide-content">
+            <h2>What Students Make</h2>
+            <p>Not just slideshows and concepts. Actual work. Prototypes, systems, tools, artworks. Websites, games, robots, data visualizations, 3D worlds, AI creative pipelines, custom digital tools.</p>
+            <div class="image-grid large">
+                <img src="../images/students/ctc_47.jpg" alt="Student work">
+                <img src="../images/students/ctc_65.jpg" alt="Student work">
+                <img src="../images/students/ctc_77.jpg" alt="Student work">
+                <img src="../images/students/ctc_78.jpg" alt="Student work">
+                <img src="../images/students/ctc_28.jpg" alt="Student work">
+                <img src="../images/students/ctc_53.jpg" alt="Student work">
+                <img src="../images/students/DSC06398.jpg" alt="Student work">
+                <img src="../images/students/ctc_82.jpg" alt="Student work">
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: A Flexible, Evolving Model -->
+    <section class="slide" data-slide="4">
+        <div class="slide-content">
+            <h2>A Flexible, Evolving Model</h2>
+            <p class="lead">Art & Computation introduces a new curricular model for RISD — open pathways that cross disciplines, emphasize electives, and are designed to adapt as technology evolves.</p>
+
+            <div class="callout-grid">
+                <div class="callout-box">
+                    <h4>Cross-Institutional Reach</h4>
+                    <p>Electives are open to all RISD students, expanding computational opportunities across the institution. A concentration in computation helps foster interdisciplinary work for students in other majors.</p>
+                </div>
+                <div class="callout-box">
+                    <h4>Designed to Grow</h4>
+                    <p>Multiple curricular pathways allow students and faculty to shape the department's direction. Clusters of interest can develop into full programs over time. New majors could emerge from faculty and student research — this is not a fixed department, but a RISD-specific, adaptive approach to computation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: What Partners Get -->
+    <section class="slide" data-slide="5">
+        <div class="slide-content">
+            <h2>What Partners Get</h2>
+            <ul class="benefits-list">
+                <li><strong>Talent pipeline</strong> — Access to graduates who think critically about AI and can push its creative boundaries. Not just users. Toolbuilders and questioners.</li>
+                <li><strong>Creative stress-testing</strong> — Art students use tools in ways engineers never anticipate. They surface capabilities and blind spots that traditional testing misses.</li>
+                <li><strong>Values alignment</strong> — "Safe and beneficial" AI needs people trained to question technology, not just deploy it. Art & Computation produces exactly those people.</li>
+                <li><strong>Cultural legitimacy</strong> — Supporting the leading art school's computation program signals that AI is a creative medium worthy of deep artistic engagement.</li>
+                <li><strong>Insight</strong> — What happens when trained artists work seriously with frontier AI? That's an interesting question for everyone.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: Giving Opportunities -->
+    <section class="slide" data-slide="6">
+        <div class="slide-content">
+            <h2>Giving Opportunities</h2>
+            <table class="giving-table compact">
+                <tr>
+                    <th>$10M+</th>
+                    <td>Computation Lab — exhibition and collaborative workspace</td>
+                </tr>
+                <tr>
+                    <th>$5M – $10M</th>
+                    <td>Endowed faculty positions (1–3 named professorships)</td>
+                </tr>
+                <tr>
+                    <th>$2M</th>
+                    <td>Comprehensive Hub — classrooms, fabrication, offices</td>
+                </tr>
+                <tr>
+                    <th>$1M <span class="or">or $100k/yr</span></th>
+                    <td>Post-graduate fellowship — salary, research, teaching</td>
+                </tr>
+                <tr>
+                    <th>$500k <span class="or">or $50k/yr</span></th>
+                    <td>Internship program (3–5 students/year)</td>
+                </tr>
+                <tr>
+                    <th>$500k <span class="or">or $50k/yr</span></th>
+                    <td>Major speaker series or annual symposium</td>
+                </tr>
+                <tr>
+                    <th>$250k</th>
+                    <td>Tech Hub and student lounge, or sponsored studio</td>
+                </tr>
+                <tr>
+                    <th>$150k</th>
+                    <td>Makerspace and light woodshop</td>
+                </tr>
+                <tr>
+                    <th>$100k</th>
+                    <td>Equipment suite — digital fabrication, woodshop</td>
+                </tr>
+                <tr>
+                    <th>$25k/yr</th>
+                    <td>Visiting artists and guest speakers in classrooms</td>
+                </tr>
+                <tr>
+                    <th>$10k</th>
+                    <td>Technology — computers and software</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: Close -->
+    <section class="slide" data-slide="7">
+        <div class="slide-content">
+            <h1>Art & Computation</h1>
+            <p class="subtitle">Join now and shape what it becomes.</p>
+            <div class="contact-info">
+                <p><strong>Clement Valla</strong>, Department Head</p>
+                <p><a href="mailto:artandcomputation@risd.edu">artandcomputation@risd.edu</a></p>
+                <p><a href="https://aac.risd.edu">aac.risd.edu</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    (function() {
+        'use strict';
+
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const counter = document.getElementById('slide-counter');
+        const navHint = document.getElementById('nav-hint');
+        let currentSlide = 0;
+
+        function updateCounter() {
+            if (counter) {
+                counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            }
+        }
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+
+            currentSlide = index;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+            updateCounter();
+
+            if (navHint && currentSlide > 0) {
+                navHint.style.opacity = '0';
+                setTimeout(() => navHint.style.display = 'none', 300);
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                case 'PageUp':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    goToSlide(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    goToSlide(totalSlides - 1);
+                    break;
+            }
+        });
+
+        // Click navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+
+            const clickX = e.clientX;
+            const windowWidth = window.innerWidth;
+
+            if (clickX > windowWidth / 2) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+        });
+
+        // Track scroll position
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                let maxVisible = 0;
+                let visibleSlide = 0;
+
+                slides.forEach((slide, index) => {
+                    const rect = slide.getBoundingClientRect();
+                    const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                    if (visible > maxVisible) {
+                        maxVisible = visible;
+                        visibleSlide = index;
+                    }
+                });
+
+                if (visibleSlide !== currentSlide) {
+                    currentSlide = visibleSlide;
+                    updateCounter();
+                }
+            }, 100);
+        });
+
+        updateCounter();
+    })();
+    </script>
+</body>
+</html>

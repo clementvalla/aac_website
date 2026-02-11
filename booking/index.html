@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desk Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem 0;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        a {
+            color: #39ff14;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #999;
+        }
+
+        .controls {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #111;
+            border: 1px solid #39ff14;
+        }
+
+        .controls label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #39ff14;
+        }
+
+        .controls input,
+        .controls select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-family: inherit;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .controls input:focus,
+        .controls select:focus {
+            outline: 2px solid #39ff14;
+            outline-offset: 2px;
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+
+        .desk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .desk {
+            aspect-ratio: 1;
+            border: 2px solid #fff;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .desk:hover {
+            background: #111;
+        }
+
+        .desk.available {
+            background: #000;
+        }
+
+        .desk.selected {
+            background: #39ff14;
+            color: #000;
+            border-color: #39ff14;
+        }
+
+        .desk.occupied {
+            background: #1a1a1a;
+            color: #666;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        .desk.occupied:hover {
+            background: #1a1a1a;
+        }
+
+        .desk-number {
+            font-size: 0.85rem;
+        }
+
+        .desk-type {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+            opacity: 0.7;
+        }
+
+        .legend {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #fff;
+            background: #111;
+        }
+
+        .legend-items {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-box {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #fff;
+        }
+
+        .legend-box.available {
+            background: #000;
+        }
+
+        .legend-box.selected {
+            background: #39ff14;
+        }
+
+        .legend-box.occupied {
+            background: #1a1a1a;
+            border-color: #666;
+        }
+
+        .booking-panel {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #000;
+            border: 2px solid #39ff14;
+            padding: 1.5rem;
+            min-width: 300px;
+            box-shadow: 4px 4px 0 #39ff14;
+            display: none;
+            z-index: 100;
+        }
+
+        .booking-panel.active {
+            display: block;
+        }
+
+        .booking-panel h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .booking-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .booking-label {
+            font-weight: 600;
+        }
+
+        #user-email {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-family: inherit;
+            margin-bottom: 1rem;
+        }
+
+        #user-email:focus {
+            outline: 2px solid #39ff14;
+            outline-offset: 2px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #39ff14;
+            background: #39ff14;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #000;
+            color: #39ff14;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #000;
+            color: #fff;
+            border-color: #fff;
+            margin-top: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #000;
+            border: 2px solid #39ff14;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 8px 8px 0 #39ff14;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #39ff14;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #39ff14;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #39ff14;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .desk-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .booking-panel {
+                right: 1rem;
+                left: 1rem;
+                bottom: 1rem;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Desk Booking</h1>
+        <p class="subtitle">Reserve your workspace</p>
+    </div>
+
+    <div class="controls">
+        <label>Select Reservation Type</label>
+        <select id="reservation-type">
+            <option value="semester">Semester Long</option>
+            <option value="short-term">Short Term</option>
+        </select>
+
+        <div id="short-term-controls" style="display: none; margin-top: 1rem;">
+            <label>Start Date</label>
+            <input type="date" id="booking-date" />
+            <label style="margin-top: 0.5rem;">Duration</label>
+            <select id="duration-select">
+                <option value="1-day">1 Day</option>
+                <option value="1-week">1 Week</option>
+                <option value="2-weeks">2 Weeks</option>
+            </select>
+        </div>
+
+        <div id="semester-info" style="margin-top: 1rem; padding: 1rem; background: #1a1a1a; border-radius: 4px; display: none;">
+            <div style="margin-bottom: 0.5rem;"><strong style="color: #39ff14;">Semester Period:</strong></div>
+            <div id="semester-dates" style="font-size: 1.1rem;"></div>
+            <div style="margin-top: 0.5rem; color: #999; font-size: 0.9rem;">All-day access for the full semester</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Upstairs — Semester Long</h2>
+        <p>14 desks available for full semester reservations</p>
+        <p class="loading-text" id="semester-loading"><span class="loading"></span> Loading availability...</p>
+        <div class="desk-grid" id="semester-desk-grid"></div>
+    </div>
+
+    <div class="section">
+        <h2>Downstairs — Short Term</h2>
+        <p>6 desks available for daily reservations</p>
+        <p class="loading-text" id="shortterm-loading"><span class="loading"></span> Loading availability...</p>
+        <div class="desk-grid" id="short-term-desk-grid"></div>
+    </div>
+
+    <div class="legend">
+        <h3>Legend</h3>
+        <div class="legend-items">
+            <div class="legend-item">
+                <div class="legend-box available"></div>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box selected"></div>
+                <span>Selected</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box occupied"></div>
+                <span>Occupied</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-panel" id="booking-summary">
+        <h3>Booking Summary</h3>
+        <div class="booking-info">
+            <div class="booking-row">
+                <span class="booking-label">Desk</span>
+                <span id="summary-desk">-</span>
+            </div>
+            <div class="booking-row">
+                <span class="booking-label">Date</span>
+                <span id="summary-date">-</span>
+            </div>
+            <div class="booking-row">
+                <span class="booking-label">Time</span>
+                <span id="summary-time">-</span>
+            </div>
+        </div>
+        <label for="user-email" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #39ff14;">Email</label>
+        <input
+            type="email"
+            id="user-email"
+            placeholder="your.email@example.com"
+            required
+        />
+        <button class="btn" id="confirm-btn">Confirm Booking</button>
+        <button class="btn btn-secondary" id="clear-btn">Clear Selection</button>
+    </div>
+
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-icon">&#10003;</div>
+            <h2>Booking Confirmed</h2>
+            <p id="success-message">Your desk has been successfully reserved.</p>
+            <button class="btn" id="done-btn">Done</button>
+        </div>
+    </div>
+
+    <div class="modal" id="error-modal">
+        <div class="modal-content">
+            <div class="modal-icon" style="color: #ff3939;">&#10007;</div>
+            <h2>Booking Failed</h2>
+            <p id="error-message">An error occurred. Please try again.</p>
+            <button class="btn" id="error-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ===================================
+        // CONFIGURATION
+        // ===================================
+        const SEMESTER_START = '2026-02-12';
+        const SEMESTER_END = '2026-05-25';
+
+        // ===================================
+        // INITIALIZATION
+        // ===================================
+        const dateInput = document.getElementById('booking-date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+        dateInput.min = today;
+
+        const semesterDesks = 14;
+        const shortTermDesks = 6;
+
+        let occupiedSemesterDesks = [];
+        let occupiedShortTermDesks = [];
+
+        let selectedDesk = null;
+        let selectedDeskType = null;
+
+        // Load occupied desks from bookings.json
+        loadOccupiedDesks();
+
+        async function loadOccupiedDesks() {
+            try {
+                const response = await fetch('bookings.json?' + Date.now());
+                const bookings = await response.json();
+
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+
+                occupiedSemesterDesks = [];
+                occupiedShortTermDesks = [];
+
+                bookings.forEach(function(booking) {
+                    if (booking.status !== 'active') return;
+
+                    var endDate = new Date(booking.endDate);
+                    if (endDate < now) return;
+
+                    var deskNum = parseInt(String(booking.deskNumber).replace(/[^0-9]/g, ''), 10);
+                    if (isNaN(deskNum)) return;
+
+                    if (booking.deskType === 'semester') {
+                        if (occupiedSemesterDesks.indexOf(deskNum) === -1) {
+                            occupiedSemesterDesks.push(deskNum);
+                        }
+                    } else {
+                        if (occupiedShortTermDesks.indexOf(deskNum) === -1) {
+                            occupiedShortTermDesks.push(deskNum);
+                        }
+                    }
+                });
+
+                document.getElementById('semester-loading').style.display = 'none';
+                document.getElementById('shortterm-loading').style.display = 'none';
+
+            } catch (error) {
+                console.error('Failed to load bookings:', error);
+                document.getElementById('semester-loading').innerHTML =
+                    '<span style="color: #ff3939;">Error loading data. Showing all as available.</span>';
+                document.getElementById('shortterm-loading').innerHTML =
+                    '<span style="color: #ff3939;">Error loading data. Showing all as available.</span>';
+            }
+
+            initializeDesks();
+        }
+
+        function initializeDesks() {
+            // Semester desks
+            const semesterGrid = document.getElementById('semester-desk-grid');
+            semesterGrid.innerHTML = '';
+
+            for (let i = 1; i <= semesterDesks; i++) {
+                const desk = document.createElement('div');
+                const isOccupied = occupiedSemesterDesks.includes(i);
+
+                desk.className = 'desk ' + (isOccupied ? 'occupied' : 'available');
+                desk.innerHTML = '<div class="desk-number">S' + String(i).padStart(2, '0') + '</div><div class="desk-type">Semester</div>';
+
+                if (!isOccupied) {
+                    desk.addEventListener('click', (function(num, elem) {
+                        return function() {
+                            selectDesk(num, elem, 'semester');
+                        };
+                    })(i, desk));
+                }
+
+                semesterGrid.appendChild(desk);
+            }
+
+            // Short term desks
+            const shortTermGrid = document.getElementById('short-term-desk-grid');
+            shortTermGrid.innerHTML = '';
+
+            for (let i = 1; i <= shortTermDesks; i++) {
+                const desk = document.createElement('div');
+                const isOccupied = occupiedShortTermDesks.includes(i);
+
+                desk.className = 'desk ' + (isOccupied ? 'occupied' : 'available');
+                desk.innerHTML = '<div class="desk-number">T' + String(i).padStart(2, '0') + '</div><div class="desk-type">Short Term</div>';
+
+                if (!isOccupied) {
+                    desk.addEventListener('click', (function(num, elem) {
+                        return function() {
+                            selectDesk(num, elem, 'short-term');
+                        };
+                    })(i, desk));
+                }
+
+                shortTermGrid.appendChild(desk);
+            }
+        }
+
+        function selectDesk(deskNumber, deskElement, deskType) {
+            const allDesks = document.querySelectorAll('.desk');
+            for (let i = 0; i < allDesks.length; i++) {
+                if (allDesks[i].classList.contains('selected')) {
+                    allDesks[i].classList.remove('selected');
+                    allDesks[i].classList.add('available');
+                }
+            }
+
+            deskElement.classList.remove('available');
+            deskElement.classList.add('selected');
+            selectedDesk = deskNumber;
+            selectedDeskType = deskType;
+
+            document.getElementById('reservation-type').value = deskType;
+            updateTimeSlotVisibility();
+            updateBookingSummary();
+            document.getElementById('booking-summary').classList.add('active');
+        }
+
+        function updateTimeSlotVisibility() {
+            const reservationType = document.getElementById('reservation-type').value;
+            const shortTermControls = document.getElementById('short-term-controls');
+            const semesterInfo = document.getElementById('semester-info');
+
+            if (reservationType === 'semester') {
+                shortTermControls.style.display = 'none';
+                semesterInfo.style.display = 'block';
+                const startDate = new Date(SEMESTER_START + 'T00:00:00');
+                const endDate = new Date(SEMESTER_END + 'T00:00:00');
+                document.getElementById('semester-dates').textContent =
+                    startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+                    ' — ' +
+                    endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            } else {
+                shortTermControls.style.display = 'block';
+                semesterInfo.style.display = 'none';
+            }
+        }
+
+        function updateBookingSummary() {
+            const reservationType = document.getElementById('reservation-type').value;
+            const prefix = selectedDeskType === 'semester' ? 'S' : 'T';
+            const typeLabel = selectedDeskType === 'semester' ? 'Semester' : 'Short Term';
+
+            document.getElementById('summary-desk').textContent = prefix + String(selectedDesk).padStart(2, '0') + ' (' + typeLabel + ')';
+
+            if (reservationType === 'semester') {
+                const startDate = new Date(SEMESTER_START + 'T00:00:00');
+                const endDate = new Date(SEMESTER_END + 'T00:00:00');
+                document.getElementById('summary-date').textContent =
+                    startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+                    ' — ' +
+                    endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                document.getElementById('summary-time').textContent = 'All Day (Full Semester)';
+            } else {
+                const startDate = document.getElementById('booking-date').value;
+                const duration = document.getElementById('duration-select').value;
+
+                let endDate = new Date(startDate + 'T00:00:00');
+                let durationText = '';
+
+                if (duration === '1-week') {
+                    endDate.setDate(endDate.getDate() + 6);
+                    durationText = ' (1 Week)';
+                } else if (duration === '2-weeks') {
+                    endDate.setDate(endDate.getDate() + 13);
+                    durationText = ' (2 Weeks)';
+                }
+
+                if (duration === '1-day') {
+                    document.getElementById('summary-date').textContent = new Date(startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                } else {
+                    document.getElementById('summary-date').textContent =
+                        new Date(startDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+                        ' — ' +
+                        endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+                        durationText;
+                }
+
+                document.getElementById('summary-time').textContent = 'All Day';
+            }
+        }
+
+        function clearSelection() {
+            const allDesks = document.querySelectorAll('.desk');
+            for (let i = 0; i < allDesks.length; i++) {
+                if (allDesks[i].classList.contains('selected')) {
+                    allDesks[i].classList.remove('selected');
+                    allDesks[i].classList.add('available');
+                }
+            }
+            selectedDesk = null;
+            selectedDeskType = null;
+            document.getElementById('user-email').value = '';
+            document.getElementById('booking-summary').classList.remove('active');
+        }
+
+        async function confirmBooking() {
+            const emailInput = document.getElementById('user-email');
+            const email = emailInput.value.trim();
+            const confirmBtn = document.getElementById('confirm-btn');
+
+            if (!selectedDesk) {
+                alert('Please select a desk first.');
+                return;
+            }
+
+            if (!email) {
+                alert('Please enter your email address.');
+                emailInput.focus();
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                emailInput.focus();
+                return;
+            }
+
+            // Disable button
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<span class="loading"></span> Processing...';
+
+            const reservationType = document.getElementById('reservation-type').value;
+            const prefix = selectedDeskType === 'semester' ? 'S' : 'T';
+            const deskNumber = prefix + String(selectedDesk).padStart(2, '0');
+
+            let startDate, endDate, dateText, timeText, duration;
+
+            if (reservationType === 'semester') {
+                startDate = SEMESTER_START;
+                endDate = SEMESTER_END;
+                const start = new Date(SEMESTER_START + 'T00:00:00');
+                const end = new Date(SEMESTER_END + 'T00:00:00');
+                dateText = start.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                }) + ' — ' + end.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                timeText = 'All Day (Full Semester)';
+                duration = 'semester';
+            } else {
+                startDate = document.getElementById('booking-date').value;
+                duration = document.getElementById('duration-select').value;
+
+                let endDateObj = new Date(startDate + 'T00:00:00');
+
+                if (duration === '1-week') {
+                    endDateObj.setDate(endDateObj.getDate() + 6);
+                    dateText = new Date(startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) + ' — ' + endDateObj.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) + ' (1 Week)';
+                } else if (duration === '2-weeks') {
+                    endDateObj.setDate(endDateObj.getDate() + 13);
+                    dateText = new Date(startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) + ' — ' + endDateObj.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) + ' (2 Weeks)';
+                } else {
+                    dateText = new Date(startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                }
+
+                endDate = endDateObj.toISOString().split('T')[0];
+                timeText = 'All Day';
+            }
+
+            try {
+                const response = await fetch('save-booking.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        deskNumber: deskNumber,
+                        deskType: reservationType,
+                        userEmail: email,
+                        startDate: startDate,
+                        endDate: endDate,
+                        duration: duration,
+                        dateText: dateText,
+                        timeText: timeText
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('success-message').textContent =
+                        'Desk ' + deskNumber + ' has been reserved for ' + email + '.';
+                    document.getElementById('success-modal').classList.add('active');
+                } else if (result.conflict) {
+                    document.getElementById('error-message').textContent =
+                        'This desk is already booked for the selected dates. Please choose a different desk or dates.';
+                    document.getElementById('error-modal').classList.add('active');
+                } else {
+                    document.getElementById('error-message').textContent =
+                        result.message || 'An error occurred while processing your booking.';
+                    document.getElementById('error-modal').classList.add('active');
+                }
+
+                // Reload availability
+                await loadOccupiedDesks();
+
+            } catch (error) {
+                console.error('Booking error:', error);
+                document.getElementById('error-message').textContent =
+                    'An error occurred while processing your booking. Please try again.';
+                document.getElementById('error-modal').classList.add('active');
+            } finally {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Confirm Booking';
+            }
+        }
+
+        function closeModal() {
+            // Reload the page to guarantee the desk grid reflects the new booking
+            window.location.reload();
+        }
+
+        function closeErrorModal() {
+            document.getElementById('error-modal').classList.remove('active');
+        }
+
+        // Event listeners
+        document.getElementById('booking-date').addEventListener('change', function() {
+            if (selectedDesk) updateBookingSummary();
+        });
+
+        document.getElementById('duration-select').addEventListener('change', function() {
+            if (selectedDesk) updateBookingSummary();
+        });
+
+        document.getElementById('reservation-type').addEventListener('change', function() {
+            updateTimeSlotVisibility();
+            if (selectedDesk) {
+                clearSelection();
+            }
+        });
+
+        document.getElementById('confirm-btn').addEventListener('click', confirmBooking);
+        document.getElementById('clear-btn').addEventListener('click', clearSelection);
+        document.getElementById('done-btn').addEventListener('click', closeModal);
+        document.getElementById('error-close-btn').addEventListener('click', closeErrorModal);
+
+        // Initialize
+        updateTimeSlotVisibility();
+    </script>
+</body>
+</html>

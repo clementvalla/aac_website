@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings Admin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        a { color: #39ff14; }
+        .subtitle { color: #999; margin-bottom: 2rem; }
+        .controls { margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+        .controls select, .controls input {
+            padding: 0.5rem; font-size: 0.9rem; border: 1px solid #fff;
+            background: #000; color: #fff; font-family: inherit;
+        }
+        .controls select:focus, .controls input:focus { outline: 2px solid #39ff14; }
+        .btn {
+            padding: 0.5rem 1rem; border: 2px solid #39ff14; background: #39ff14;
+            color: #000; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 0.9rem;
+        }
+        .btn:hover { background: #000; color: #39ff14; }
+        .btn-danger { border-color: #ff3939; background: #ff3939; color: #fff; }
+        .btn-danger:hover { background: #000; color: #ff3939; }
+        .btn-small { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+        .stats { display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .stat {
+            background: #111; border: 1px solid #333; padding: 1rem 1.5rem; min-width: 120px;
+        }
+        .stat-number { font-size: 2rem; font-weight: 700; color: #39ff14; }
+        .stat-label { font-size: 0.8rem; color: #999; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th {
+            text-align: left; padding: 0.75rem; border-bottom: 2px solid #39ff14;
+            color: #39ff14; font-weight: 600; white-space: nowrap;
+        }
+        td { padding: 0.75rem; border-bottom: 1px solid #222; }
+        tr:hover td { background: #111; }
+        .status-active { color: #39ff14; }
+        .status-cancelled { color: #ff3939; text-decoration: line-through; }
+        .status-expired { color: #666; }
+        .empty { text-align: center; padding: 3rem; color: #666; }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            table { font-size: 0.75rem; }
+            td, th { padding: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bookings Admin</h1>
+    <p class="subtitle"><a href="index.html">Back to Booking Page</a></p>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+        <label style="color: #999;">Filter:</label>
+        <select id="filter-type">
+            <option value="all">All Types</option>
+            <option value="semester">Semester</option>
+            <option value="short-term">Short Term</option>
+        </select>
+        <select id="filter-status">
+            <option value="all">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="expired">Expired</option>
+        </select>
+        <input type="text" id="filter-search" placeholder="Search email or desk..." />
+        <button class="btn" onclick="downloadJSON()">Download JSON</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Desk</th>
+                <th>Type</th>
+                <th>Email</th>
+                <th>Dates</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Booked</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookings-table"></tbody>
+    </table>
+    <div class="empty" id="empty-message" style="display:none;">No bookings found.</div>
+
+    <script>
+        let allBookings = [];
+
+        async function loadBookings() {
+            try {
+                const response = await fetch('bookings.json?' + Date.now());
+                allBookings = await response.json();
+            } catch (e) {
+                allBookings = [];
+            }
+            renderStats();
+            renderTable();
+        }
+
+        function renderStats() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const active = allBookings.filter(function(b) {
+                return b.status === 'active' && new Date(b.endDate) >= now;
+            });
+            const semester = active.filter(function(b) { return b.deskType === 'semester'; });
+            const shortTerm = active.filter(function(b) { return b.deskType !== 'semester'; });
+
+            document.getElementById('stats').innerHTML =
+                '<div class="stat"><div class="stat-number">' + allBookings.length + '</div><div class="stat-label">Total</div></div>' +
+                '<div class="stat"><div class="stat-number">' + active.length + '</div><div class="stat-label">Active</div></div>' +
+                '<div class="stat"><div class="stat-number">' + semester.length + '/14</div><div class="stat-label">Semester</div></div>' +
+                '<div class="stat"><div class="stat-number">' + shortTerm.length + '/6</div><div class="stat-label">Short Term</div></div>';
+        }
+
+        function renderTable() {
+            var typeFilter = document.getElementById('filter-type').value;
+            var statusFilter = document.getElementById('filter-status').value;
+            var search = document.getElementById('filter-search').value.toLowerCase();
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            var filtered = allBookings.filter(function(b) {
+                if (typeFilter !== 'all' && b.deskType !== typeFilter) return false;
+
+                var effectiveStatus = b.status;
+                if (effectiveStatus === 'active' && new Date(b.endDate) < now) effectiveStatus = 'expired';
+                if (statusFilter !== 'all' && effectiveStatus !== statusFilter) return false;
+
+                if (search) {
+                    var haystack = ((b.deskNumber || '') + ' ' + (b.userEmail || '')).toLowerCase();
+                    if (haystack.indexOf(search) === -1) return false;
+                }
+                return true;
+            });
+
+            var tbody = document.getElementById('bookings-table');
+            var empty = document.getElementById('empty-message');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            // Sort newest first
+            filtered.sort(function(a, b) {
+                return new Date(b.timestamp) - new Date(a.timestamp);
+            });
+
+            tbody.innerHTML = filtered.map(function(b, i) {
+                var effectiveStatus = b.status;
+                if (effectiveStatus === 'active' && new Date(b.endDate) < now) effectiveStatus = 'expired';
+
+                var statusClass = 'status-' + effectiveStatus;
+                var booked = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                }) : '-';
+
+                return '<tr>' +
+                    '<td><strong>' + (b.deskNumber || '-') + '</strong></td>' +
+                    '<td>' + (b.deskType || '-') + '</td>' +
+                    '<td>' + (b.userEmail || '-') + '</td>' +
+                    '<td>' + (b.dateText || b.startDate + ' — ' + b.endDate) + '</td>' +
+                    '<td>' + (b.duration || '-') + '</td>' +
+                    '<td class="' + statusClass + '">' + effectiveStatus + '</td>' +
+                    '<td>' + booked + '</td>' +
+                    '<td>' +
+                        (effectiveStatus === 'active'
+                            ? '<button class="btn btn-danger btn-small" onclick="cancelBooking(\'' + b.id + '\')">Cancel</button>'
+                            : '') +
+                    '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        async function cancelBooking(id) {
+            if (!confirm('Cancel this booking?')) return;
+            try {
+                const response = await fetch('cancel-booking.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    await loadBookings();
+                } else {
+                    alert(result.message || 'Failed to cancel.');
+                }
+            } catch (e) {
+                alert('Error cancelling booking.');
+            }
+        }
+
+        function downloadJSON() {
+            var blob = new Blob([JSON.stringify(allBookings, null, 2)], { type: 'application/json' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bookings-' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+        }
+
+        document.getElementById('filter-type').addEventListener('change', renderTable);
+        document.getElementById('filter-status').addEventListener('change', renderTable);
+        document.getElementById('filter-search').addEventListener('input', renderTable);
+
+        loadBookings();
+    </script>
+</body>
+</html>
