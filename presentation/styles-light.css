@@ -1,0 +1,1341 @@
+/* ========================================
+   Art & Computation — Light Presentation Style
+   Blue / White / Black — RISD branding
+   Layout matches index.html (student deck)
+   ======================================== */
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Custom Properties */
+:root {
+    --bg-color: #FFFFFF;
+    --text-color: #1a1a1a;
+    --text-secondary: #555555;
+    --accent-color: #3366FF;
+    --accent-light: rgba(51, 102, 255, 0.08);
+    --border-color: #d0d0d0;
+    --link-color: #3366FF;
+}
+
+/* Base Styles */
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-color);
+    background: var(--bg-color);
+    overflow-x: hidden;
+}
+
+/* ========================================
+   SLIDE CONTAINER
+   ======================================== */
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    background: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 60px 80px;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+.slide-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Blue accent slides (title + closing) */
+.slide.slide-blue {
+    background: var(--accent-color);
+    color: #FFFFFF;
+}
+
+.slide.slide-blue h1,
+.slide.slide-blue h2,
+.slide.slide-blue p,
+.slide.slide-blue a,
+.slide.slide-blue li {
+    color: #FFFFFF;
+}
+
+.slide.slide-blue .slide-footer {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.slide.slide-blue .subtitle {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.slide.slide-blue .callout-box {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.slide.slide-blue .callout-box p {
+    color: #FFFFFF;
+}
+
+.slide.slide-blue .feature-list li {
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.slide.slide-blue .image-frame {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ========================================
+   Slide Footer (RISD logo + date)
+   ======================================== */
+
+.slide-footer {
+    position: absolute;
+    top: 1.5rem;
+    right: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.risd-logo {
+    height: 22px;
+    width: auto;
+}
+
+.slide-date {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+h1 {
+    font-size: 5rem;
+    font-weight: bold;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+h3 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+p {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 2rem;
+    line-height: 1.4;
+    max-width: 700px;
+    color: var(--text-secondary);
+}
+
+.slide-subtitle {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.large-text {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.lead {
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.deck-context {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+}
+
+.note {
+    font-size: 1.25rem;
+    opacity: 0.8;
+    margin-top: 2rem;
+}
+
+.mono {
+    font-family: "Courier New", Monaco, monospace;
+}
+
+/* Links */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.slide.slide-blue a {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+/* ========================================
+   LAYOUT GRIDS
+   ======================================== */
+
+.content-grid {
+    display: grid;
+    gap: 3rem;
+    flex: 1;
+    align-items: start;
+    overflow: hidden;
+}
+
+.content-grid.two-col {
+    grid-template-columns: 1fr 1fr;
+}
+
+.content-grid.two-col-wide {
+    grid-template-columns: 1.3fr 1fr;
+}
+
+.content-grid.two-col-flex {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+}
+
+.text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ========================================
+   TITLE SLIDE (Slide 1)
+   ======================================== */
+
+.title-slide {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.title-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-image .image-frame {
+    height: 500px;
+    max-height: 70vh;
+}
+
+/* ========================================
+   IMAGE FRAMES
+   ======================================== */
+
+.image-frame {
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-frame.small {
+    height: 170px;
+}
+
+.image-frame.tall {
+    height: 100%;
+    min-height: 0;
+    max-height: calc(100vh - 280px);
+}
+
+/* Image grid for Make Things slide */
+.image-grid-small {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.image-grid-small .image-frame {
+    height: 180px;
+}
+
+/* ========================================
+   FEATURE LISTS
+   ======================================== */
+
+.feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.feature-list li {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list.compact li {
+    font-size: 1.2rem;
+    padding: 0.4rem 0;
+}
+
+/* ========================================
+   CALLOUT BOXES
+   ======================================== */
+
+.callout-box {
+    border: 2px solid var(--accent-color);
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+    background: #FFFFFF;
+}
+
+.callout-box p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.callout-box.wide {
+    margin-top: 1.5rem;
+}
+
+.callout-box.large {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.callout-box.large p {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.callout-box.highlight-box {
+    border: 2px solid var(--accent-color);
+    background: #FFFFFF;
+}
+
+.callout-box.highlight-box p {
+    font-size: 0.95rem;
+}
+
+/* Callout Grid (2x2) */
+.callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 2rem 0;
+}
+
+.callout-box h4,
+.callout-box h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.callout-box p {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ========================================
+   EMPHASIS BOX (Make Things slide)
+   ======================================== */
+
+.emphasis-box {
+    border: 2px solid var(--accent-color);
+    padding: 0.75rem 1.25rem;
+    margin-top: 0.5rem;
+    background: #FFFFFF;
+}
+
+.emphasis-header {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+}
+
+.emphasis-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.emphasis-list li {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    padding: 0.2rem 0;
+}
+
+.emphasis-list li strong {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   CURRICULUM COLUMNS (Slide 4)
+   ======================================== */
+
+.curriculum-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.curriculum-col {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+}
+
+.curriculum-col .year-label {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.curriculum-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.curriculum-list li {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    padding: 0.4rem 0;
+}
+
+.side-note {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.note-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.note-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   DEGREE BREAKDOWN (Radical Flexibility)
+   ======================================== */
+
+.degree-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.degree-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 32px;
+}
+
+.bar-fill {
+    background: var(--text-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    min-width: 80px;
+}
+
+.bar-fill span {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--bg-color);
+    white-space: nowrap;
+}
+
+.bar-percent {
+    font-size: 1rem;
+    font-family: "Courier New", Monaco, monospace;
+    color: var(--text-secondary);
+}
+
+.degree-bar.highlight .bar-fill {
+    background: var(--accent-color);
+}
+
+.degree-bar.highlight .bar-fill span {
+    color: #FFFFFF;
+}
+
+.key-numbers {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.key-number {
+    font-size: 1.1rem;
+}
+
+.key-number .num {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    display: block;
+}
+
+/* Flexibility boxes */
+.flexibility-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.flex-box {
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+
+/* ========================================
+   PATHWAYS IMAGE SLIDE
+   ======================================== */
+
+.pathways-image-slide {
+    align-items: center;
+    justify-content: center;
+}
+
+.pathways-image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: calc(100vh - 200px);
+}
+
+.pathways-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* ========================================
+   AI SHIFT (Slide 7)
+   ======================================== */
+
+.ai-content p {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-bottom: 0.6rem;
+}
+
+.ai-content .bottom-line {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.jig-theory-box {
+    border: 2px solid var(--accent-color);
+    padding: 0.75rem 1rem;
+    margin: 0.6rem 0;
+    background: #FFFFFF;
+}
+
+.jig-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.jig-theory-box p {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* ========================================
+   WORK GRID (What You Can Make)
+   ======================================== */
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.work-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.work-item span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* ========================================
+   CAREER GRID (Radical Interdisciplinarity)
+   ======================================== */
+
+.career-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.career-box {
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+}
+
+.career-box h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.career-box p {
+    font-size: 1.05rem;
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   WHY JOIN NOW
+   ======================================== */
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.why-box {
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+}
+
+.why-box h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.why-box p {
+    font-size: 1.05rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.community-images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.community-images .image-frame {
+    height: 150px;
+}
+
+/* ========================================
+   PATHWAY BOXES (Two Pathways slide)
+   ======================================== */
+
+.pathway-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    flex: 1;
+    align-items: start;
+}
+
+.pathway-box {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.pathway-box h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.pathway-box ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+}
+
+.pathway-box li {
+    font-size: 1.15rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pathway-box li:last-child {
+    border-bottom: none;
+}
+
+.pathway-box.major {
+    border-color: var(--accent-color);
+}
+
+.pathway-summary {
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.pathway-summary p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.pathway-box.major .pathway-summary {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.pathway-box.major .pathway-summary p {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   ECOSYSTEM BOXES (stacked)
+   ======================================== */
+
+.ecosystem-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ecosystem-box {
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--accent-color);
+    background: #FFFFFF;
+}
+
+.ecosystem-box h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 0.4rem;
+}
+
+.ecosystem-box p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ========================================
+   INFO GRID (How to Join / Contact)
+   ======================================== */
+
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-item .label {
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.info-item .value {
+    font-size: 1.2rem;
+}
+
+/* Final section */
+.final-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.final-callout {
+    border: 2px solid var(--accent-color);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.final-callout p {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    color: var(--accent-color);
+}
+
+.final-image {
+    flex: 1;
+    min-height: 200px;
+}
+
+/* ========================================
+   Aspiration Box
+   ======================================== */
+
+.aspiration-box {
+    border: 2px solid var(--accent-color);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    background: #FFFFFF;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.aspiration-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* ========================================
+   Bottom Notes
+   ======================================== */
+
+.bottom-note {
+    text-align: left;
+    font-size: 1.3rem;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.industry-note {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+}
+
+/* ========================================
+   Contact Info (closing slide)
+   ======================================== */
+
+.contact-info {
+    margin-top: 3rem;
+}
+
+.contact-info p {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   Image Grid (student work)
+   ======================================== */
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.image-grid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.image-grid.large img {
+    height: 160px;
+}
+
+/* ========================================
+   SLIDE COUNTER (Screen only)
+   ======================================== */
+
+.slide-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 1rem;
+    font-family: "Courier New", Monaco, monospace;
+    color: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+.nav-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 30px;
+    font-size: 0.85rem;
+    font-family: "Courier New", Monaco, monospace;
+    color: rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+}
+
+/* ========================================
+   LIGHTBOX
+   ======================================== */
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    cursor: pointer;
+}
+
+.lightbox.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    cursor: default;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.lightbox-close:hover {
+    color: #ccc;
+}
+
+.work-item .image-frame {
+    cursor: zoom-in;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 1400px) {
+    .slide {
+        padding: 40px 60px;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+    }
+
+    .slide-subtitle {
+        font-size: 1.4rem;
+    }
+
+    .large-text {
+        font-size: 1.5rem;
+    }
+
+    .feature-list li {
+        font-size: 1.2rem;
+    }
+
+    .work-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+
+    .career-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .image-frame.small {
+        height: 120px;
+    }
+
+    .curriculum-columns {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .slide {
+        padding: 30px 40px;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    .content-grid.two-col,
+    .content-grid.two-col-wide,
+    .content-grid.two-col-flex {
+        grid-template-columns: 1fr;
+    }
+
+    .title-slide {
+        grid-template-columns: 1fr;
+    }
+
+    .pathway-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .curriculum-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .career-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .work-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .callout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .community-images {
+        grid-template-columns: 1fr;
+    }
+
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .slide {
+        padding: 2rem 1.5rem 3.5rem;
+    }
+
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.75rem; }
+
+    .career-grid,
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   PRINT / PDF STYLES
+   ======================================== */
+
+@media print {
+    @page {
+        size: 1920px 1080px;
+        margin: 0;
+    }
+
+    html {
+        scroll-snap-type: none;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    body {
+        background: #FFFFFF !important;
+    }
+
+    .slide {
+        width: 1920px !important;
+        height: 1080px !important;
+        min-height: 1080px !important;
+        max-height: 1080px !important;
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-after: page;
+        break-inside: avoid;
+        padding: 60px 80px !important;
+        background: #FFFFFF !important;
+        color: #1a1a1a !important;
+        overflow: hidden;
+    }
+
+    .slide:last-child {
+        page-break-after: auto;
+    }
+
+    .slide.slide-blue {
+        background: #3366FF !important;
+        color: #FFFFFF !important;
+    }
+
+    .slide.slide-blue h1,
+    .slide.slide-blue h2,
+    .slide.slide-blue p,
+    .slide.slide-blue li,
+    .slide.slide-blue span {
+        color: #FFFFFF !important;
+    }
+
+    /* Hide navigation elements */
+    .slide-counter,
+    .nav-hint {
+        display: none !important;
+    }
+
+    /* Force accent colors in print */
+    .year-label,
+    .info-item .label,
+    .pathway-box h3,
+    .final-callout p,
+    .emphasis-header,
+    .jig-label,
+    .note-label,
+    .career-box h3,
+    .why-box h3,
+    .key-number .num,
+    .callout-box h4,
+    .callout-box h3,
+    .ecosystem-box h3 {
+        color: #3366FF !important;
+    }
+
+    .emphasis-list li strong {
+        color: #3366FF !important;
+    }
+
+    .pathway-box.major .pathway-summary p {
+        color: #3366FF !important;
+    }
+
+    /* Ensure borders print */
+    .image-frame,
+    .callout-box,
+    .curriculum-col,
+    .pathway-box,
+    .career-box,
+    .why-box,
+    .emphasis-box,
+    .flex-box,
+    .pathway-summary {
+        border-color: #d0d0d0 !important;
+    }
+
+    .final-callout,
+    .jig-theory-box,
+    .pathway-box.major,
+    .pathway-box.major .pathway-summary,
+    .callout-box.highlight-box {
+        border-color: #3366FF !important;
+    }
+
+    .bar-fill {
+        background: #1a1a1a !important;
+    }
+
+    .degree-bar.highlight .bar-fill {
+        background: #3366FF !important;
+    }
+
+    .bar-fill span {
+        color: #FFFFFF !important;
+    }
+
+    /* Reset font sizes for print */
+    h1 { font-size: 5rem !important; }
+    h2 { font-size: 4rem !important; }
+    h3 { font-size: 1.75rem !important; }
+    p { font-size: 1.4rem !important; }
+    .subtitle { font-size: 2rem !important; }
+    .slide-subtitle { font-size: 1.75rem !important; }
+    .large-text { font-size: 2rem !important; }
+    .feature-list li { font-size: 1.4rem !important; }
+
+    /* Ensure grids work in print */
+    .content-grid.two-col,
+    .content-grid.two-col-wide {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .content-grid.two-col-flex {
+        grid-template-columns: 1.2fr 1fr !important;
+    }
+
+    .title-slide {
+        grid-template-columns: 1.2fr 1fr !important;
+    }
+
+    .pathway-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .curriculum-columns {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .work-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    .career-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .community-images {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .callout-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+a:focus,
+button:focus {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
+}

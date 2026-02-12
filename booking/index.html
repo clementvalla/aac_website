@@ -65,17 +65,20 @@
         }
 
         .controls {
-            margin: 2rem 0;
-            padding: 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
             background: #111;
             border: 1px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .controls label {
-            display: block;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             color: #39ff14;
+            white-space: nowrap;
         }
 
         .controls input,
@@ -86,8 +89,32 @@
             background: #000;
             color: #fff;
             font-family: inherit;
-            margin-right: 1rem;
-            margin-bottom: 1rem;
+        }
+
+        .controls input[type="date"] {
+            cursor: pointer;
+        }
+
+        .controls input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        .date-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .date-arrow {
+            color: #39ff14;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-left: 0.4rem;
+            user-select: none;
+        }
+
+        .date-arrow:hover {
+            color: #fff;
         }
 
         .controls input:focus,
@@ -371,34 +398,9 @@
         <p class="subtitle">Reserve your workspace</p>
     </div>
 
-    <div class="controls">
-        <label>Select Reservation Type</label>
-        <select id="reservation-type">
-            <option value="semester">Semester Long</option>
-            <option value="short-term">Short Term</option>
-        </select>
-
-        <div id="short-term-controls" style="display: none; margin-top: 1rem;">
-            <label>Start Date</label>
-            <input type="date" id="booking-date" />
-            <label style="margin-top: 0.5rem;">Duration</label>
-            <select id="duration-select">
-                <option value="1-day">1 Day</option>
-                <option value="1-week">1 Week</option>
-                <option value="2-weeks">2 Weeks</option>
-            </select>
-        </div>
-
-        <div id="semester-info" style="margin-top: 1rem; padding: 1rem; background: #1a1a1a; border-radius: 4px; display: none;">
-            <div style="margin-bottom: 0.5rem;"><strong style="color: #39ff14;">Semester Period:</strong></div>
-            <div id="semester-dates" style="font-size: 1.1rem;"></div>
-            <div style="margin-top: 0.5rem; color: #999; font-size: 0.9rem;">All-day access for the full semester</div>
-        </div>
-    </div>
-
     <div class="section">
         <h2>Upstairs — Semester Long</h2>
-        <p>14 desks available for full semester reservations</p>
+        <p>14 desks available for full semester reservations — <span id="semester-date-range" style="color: #39ff14;"></span></p>
         <p class="loading-text" id="semester-loading"><span class="loading"></span> Loading availability...</p>
         <div class="desk-grid" id="semester-desk-grid"></div>
     </div>
@@ -406,6 +408,19 @@
     <div class="section">
         <h2>Downstairs — Short Term</h2>
         <p>6 desks available for daily reservations</p>
+        <div class="controls">
+            <label>Start Date</label>
+            <div class="date-wrapper">
+                <input type="date" id="booking-date" />
+                <span class="date-arrow" onclick="document.getElementById('booking-date').showPicker()">&#9660;</span>
+            </div>
+            <label>Duration</label>
+            <select id="duration-select">
+                <option value="1-day">1 Day</option>
+                <option value="1-week">1 Week</option>
+                <option value="2-weeks">2 Weeks</option>
+            </select>
+        </div>
         <p class="loading-text" id="shortterm-loading"><span class="loading"></span> Loading availability...</p>
         <div class="desk-grid" id="short-term-desk-grid"></div>
     </div>
@@ -605,40 +620,17 @@
             selectedDesk = deskNumber;
             selectedDeskType = deskType;
 
-            document.getElementById('reservation-type').value = deskType;
-            updateTimeSlotVisibility();
             updateBookingSummary();
             document.getElementById('booking-summary').classList.add('active');
         }
 
-        function updateTimeSlotVisibility() {
-            const reservationType = document.getElementById('reservation-type').value;
-            const shortTermControls = document.getElementById('short-term-controls');
-            const semesterInfo = document.getElementById('semester-info');
-
-            if (reservationType === 'semester') {
-                shortTermControls.style.display = 'none';
-                semesterInfo.style.display = 'block';
-                const startDate = new Date(SEMESTER_START + 'T00:00:00');
-                const endDate = new Date(SEMESTER_END + 'T00:00:00');
-                document.getElementById('semester-dates').textContent =
-                    startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
-                    ' — ' +
-                    endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            } else {
-                shortTermControls.style.display = 'block';
-                semesterInfo.style.display = 'none';
-            }
-        }
-
         function updateBookingSummary() {
-            const reservationType = document.getElementById('reservation-type').value;
             const prefix = selectedDeskType === 'semester' ? 'S' : 'T';
             const typeLabel = selectedDeskType === 'semester' ? 'Semester' : 'Short Term';
 
             document.getElementById('summary-desk').textContent = prefix + String(selectedDesk).padStart(2, '0') + ' (' + typeLabel + ')';
 
-            if (reservationType === 'semester') {
+            if (selectedDeskType === 'semester') {
                 const startDate = new Date(SEMESTER_START + 'T00:00:00');
                 const endDate = new Date(SEMESTER_END + 'T00:00:00');
                 document.getElementById('summary-date').textContent =
@@ -720,13 +712,12 @@
             confirmBtn.disabled = true;
             confirmBtn.innerHTML = '<span class="loading"></span> Processing...';
 
-            const reservationType = document.getElementById('reservation-type').value;
             const prefix = selectedDeskType === 'semester' ? 'S' : 'T';
             const deskNumber = prefix + String(selectedDesk).padStart(2, '0');
 
             let startDate, endDate, dateText, timeText, duration;
 
-            if (reservationType === 'semester') {
+            if (selectedDeskType === 'semester') {
                 startDate = SEMESTER_START;
                 endDate = SEMESTER_END;
                 const start = new Date(SEMESTER_START + 'T00:00:00');
@@ -788,7 +779,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         deskNumber: deskNumber,
-                        deskType: reservationType,
+                        deskType: selectedDeskType === 'semester' ? 'semester' : 'short-term',
                         userEmail: email,
                         startDate: startDate,
                         endDate: endDate,
@@ -846,20 +837,20 @@
             if (selectedDesk) updateBookingSummary();
         });
 
-        document.getElementById('reservation-type').addEventListener('change', function() {
-            updateTimeSlotVisibility();
-            if (selectedDesk) {
-                clearSelection();
-            }
-        });
+        // Display semester dates in description
+        (function() {
+            const start = new Date(SEMESTER_START + 'T00:00:00');
+            const end = new Date(SEMESTER_END + 'T00:00:00');
+            document.getElementById('semester-date-range').textContent =
+                start.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+                ' — ' +
+                end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        })();
 
         document.getElementById('confirm-btn').addEventListener('click', confirmBooking);
         document.getElementById('clear-btn').addEventListener('click', clearSelection);
         document.getElementById('done-btn').addEventListener('click', closeModal);
         document.getElementById('error-close-btn').addEventListener('click', closeErrorModal);
-
-        // Initialize
-        updateTimeSlotVisibility();
     </script>
 </body>
 </html>

@@ -37,5 +37,83 @@
         "dateText": "February 10, 2026",
         "timeText": "All Day",
         "status": "active"
+    },
+    {
+        "id": "698b9ed81c7ca",
+        "timestamp": "2026-02-10T16:10:48-05:00",
+        "deskNumber": "T01",
+        "deskType": "short-term",
+        "userEmail": "cvalla@risd.edu",
+        "startDate": "2026-02-11",
+        "endDate": "2026-02-11",
+        "duration": "1-day",
+        "dateText": "February 11, 2026",
+        "timeText": "All Day",
+        "status": "active"
+    },
+    {
+        "id": "698d394fe23f9",
+        "timestamp": "2026-02-11T21:22:07-05:00",
+        "deskNumber": "S02",
+        "deskType": "semester",
+        "userEmail": "sdavis01@risd.edu",
+        "startDate": "2026-02-12",
+        "endDate": "2026-05-25",
+        "duration": "semester",
+        "dateText": "February 12, 2026 \u2014 May 25, 2026",
+        "timeText": "All Day (Full Semester)",
+        "status": "active"
+    },
+    {
+        "id": "698d397b9a286",
+        "timestamp": "2026-02-11T21:22:51-05:00",
+        "deskNumber": "T03",
+        "deskType": "short-term",
+        "userEmail": "sdavis01@risd.edu",
+        "startDate": "2026-02-19",
+        "endDate": "2026-02-25",
+        "duration": "1-week",
+        "dateText": "February 19, 2026 \u2014 February 25, 2026 (1 Week)",
+        "timeText": "All Day",
+        "status": "active"
+    },
+    {
+        "id": "698d3acb6f6a7",
+        "timestamp": "2026-02-11T21:28:27-05:00",
+        "deskNumber": "T04",
+        "deskType": "short-term",
+        "userEmail": "sdavis01@risd.edu",
+        "startDate": "2026-02-19",
+        "endDate": "2026-02-19",
+        "duration": "1-day",
+        "dateText": "February 19, 2026",
+        "timeText": "All Day",
+        "status": "active"
+    },
+    {
+        "id": "698d407b22b4f",
+        "timestamp": "2026-02-11T21:52:43-05:00",
+        "deskNumber": "T05",
+        "deskType": "short-term",
+        "userEmail": "sdavis01@risd.edu",
+        "startDate": "2026-02-12",
+        "endDate": "2026-02-12",
+        "duration": "1-day",
+        "dateText": "February 12, 2026",
+        "timeText": "All Day",
+        "status": "active"
+    },
+    {
+        "id": "698d41a95976d",
+        "timestamp": "2026-02-11T21:57:45-05:00",
+        "deskNumber": "S14",
+        "deskType": "semester",
+        "userEmail": "sdavis01@risd.edu",
+        "startDate": "2026-02-12",
+        "endDate": "2026-05-25",
+        "duration": "semester",
+        "dateText": "February 12, 2026 \u2014 May 25, 2026",
+        "timeText": "All Day (Full Semester)",
+        "status": "active"
     }
 ]
